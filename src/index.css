@@ -1,0 +1,178 @@
+@import 'tailwindcss';
+
+/*
+ * Design tokens
+ * -------------
+ * Tailwind v4 is configured in CSS: every `--color-*`, `--font-*`, etc. declared in
+ * `@theme` becomes a utility (e.g. `--color-olive-600` → `bg-olive-600`, `text-olive-600`).
+ *
+ * 1. Raw palette  — olive scale, ink (black) scale, paper (white).
+ * 2. Semantic     — bg / surface / fg / muted / line / accent. These point at CSS variables
+ *                   that flip between the dark (default) and light theme, so components only
+ *                   ever use semantic utilities (`bg-bg`, `text-fg`, `border-line`...).
+ */
+
+/* Theme switching is driven by `data-theme` on <html>, not by the OS media query alone. */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+@theme {
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* Olive — brand primary. 600 is the canonical brand olive (#556B2F). */
+  --color-olive-50: #f5f7ee;
+  --color-olive-100: #e8edd5;
+  --color-olive-200: #d2dcae;
+  --color-olive-300: #b4c47f;
+  --color-olive-400: #95aa5a;
+  --color-olive-500: #748b3f;
+  --color-olive-600: #556b2f;
+  --color-olive-700: #445626;
+  --color-olive-800: #374520;
+  --color-olive-900: #2c371b;
+  --color-olive-950: #161d0c;
+
+  /* Ink — deep black base UI. 950 is the canonical base (#0F0F0F). */
+  --color-ink-50: #f4f4f3;
+  --color-ink-100: #e4e4e2;
+  --color-ink-200: #c9c9c6;
+  --color-ink-300: #a3a39f;
+  --color-ink-400: #7a7a76;
+  --color-ink-500: #5c5c59;
+  --color-ink-600: #454543;
+  --color-ink-700: #2f2f2e;
+  --color-ink-800: #1f1f1e;
+  --color-ink-900: #171717;
+  --color-ink-950: #0f0f0f;
+
+  /* Paper — clean off-white neutral (#FAFAFA). */
+  --color-paper: #fafafa;
+
+  --radius-card: 1.25rem;
+
+  --animate-fade-up: fade-up 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-pulse-soft: pulse-soft 2.4s ease-in-out infinite;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+  @keyframes pulse-soft {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.45;
+    }
+  }
+}
+
+/* Semantic tokens, resolved at runtime so the theme can switch without a rebuild. */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-soft: var(--accent-soft);
+}
+
+:root,
+[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: var(--color-ink-950);
+  --surface: var(--color-ink-900);
+  --surface-2: var(--color-ink-800);
+  --fg: var(--color-paper);
+  --muted: var(--color-ink-300);
+  --line: color-mix(in oklab, var(--color-paper) 10%, transparent);
+  /* Brighter olive for text/icons on black; solid buttons stay brand olive-600. */
+  --accent: var(--color-olive-400);
+  --accent-strong: var(--color-olive-600);
+  --accent-fg: var(--color-paper);
+  --accent-soft: color-mix(in oklab, var(--color-olive-500) 18%, transparent);
+}
+
+[data-theme='light'] {
+  color-scheme: light;
+  --bg: var(--color-paper);
+  --surface: #ffffff;
+  --surface-2: var(--color-ink-50);
+  --fg: var(--color-ink-950);
+  --muted: var(--color-ink-500);
+  --line: color-mix(in oklab, var(--color-ink-950) 10%, transparent);
+  --accent: var(--color-olive-600);
+  --accent-strong: var(--color-olive-600);
+  --accent-fg: var(--color-paper);
+  --accent-soft: color-mix(in oklab, var(--color-olive-500) 14%, transparent);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-bg font-sans text-fg antialiased;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
+  }
+  ::selection {
+    background: var(--color-olive-600);
+    color: var(--color-paper);
+  }
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+}
+
+@layer utilities {
+  /* Subtle grid backdrop used behind the hero and demo. */
+  .bg-grid {
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
