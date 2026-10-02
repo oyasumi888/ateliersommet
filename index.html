@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Atelier Sommet — High-conversion web, technical SEO & bespoke software</title>
+    <meta
+      name="description"
+      content="Atelier Sommet is a software development and technical marketing agency building high-converting landing pages, technical SEO & analytics, and bespoke ERP systems."
+    />
+    <meta name="theme-color" content="#0F0F0F" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Atelier Sommet" />
+    <meta
+      property="og:description"
+      content="High-conversion web, technical SEO & analytics, and bespoke software for ambitious teams."
+    />
+    <!-- TODO(launch): add og:url, og:image and <link rel="canonical"> once the domain is attached -->
+    <script>
+      // Apply the saved theme before first paint to avoid a flash of the wrong theme.
+      try {
+        const t = localStorage.getItem('theme')
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
