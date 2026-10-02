@@ -12,6 +12,7 @@ Single-page marketing site for the Atelier Sommet agency. Vite 8 + React 19 + Ty
 - `npm run build`: `tsc -b` type-check, then a production build to `dist/`
 - `npm run lint`: ESLint (flat config, `eslint.config.js`)
 - `npm run typecheck`: TypeScript only
+- `npm run preview`: serve the built `dist/` locally
 - No test runner is set up yet.
 
 ## Architecture
