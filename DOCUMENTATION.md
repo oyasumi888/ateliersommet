@@ -30,10 +30,12 @@ merging are small in-house modules, which keeps the JS bundle around 86 kB gzipp
 ```
 .
 ├── index.html              # HTML shell: meta/SEO tags, favicon, pre-paint theme script
+├── privacy.html, terms.html, cookies.html  # standalone legal pages (entry: src/legal.tsx)
 ├── public/
 │   └── favicon.svg         # Summit glyph (olive on ink)
 ├── src/
 │   ├── main.tsx            # Entry: fonts, global CSS, <App/>
+│   ├── legal.tsx           # Entry for the legal pages: renders <LegalPage id={data-page}/>
 │   ├── env.d.ts            # Types for the VITE_* environment variables
 │   ├── App.tsx             # Page composition: skip link, Navbar, sections, Footer
 │   ├── index.css           # Tailwind import + ALL design tokens (palette, semantic theme vars)
@@ -46,6 +48,8 @@ merging are small in-house modules, which keeps the JS bundle around 86 kB gzipp
 │   │   ├── SectionHeading.tsx  # eyebrow / title / description
 │   │   ├── ThemeProvider.tsx   # React context provider for the site theme
 │   │   └── ThemeToggle.tsx     # dark/light icon button
+│   ├── pages/
+│   │   └── LegalPage.tsx       # layout for /privacy, /terms, /cookies
 │   ├── sections/           # One file per page section (compose components + constants)
 │   │   ├── Hero.tsx
 │   │   ├── Services.tsx
@@ -56,6 +60,7 @@ merging are small in-house modules, which keeps the JS bundle around 86 kB gzipp
 │   ├── constants/          # ALL copy & mock data. Edit content here, not in JSX.
 │   │   ├── services.ts         # SERVICES[] + getServiceById()
 │   │   ├── content.ts          # HERO, ABOUT, PRINCIPLES, STATS, TEAM, TESTIMONIALS
+│   │   ├── legal.ts            # Privacy Policy, Terms of Service, Cookie Policy content
 │   │   └── site.ts             # SITE config, CONTACT (from env), NAV_LINKS, CONTACT_DETAILS, LEGAL_LINKS
 │   ├── types/
 │   │   └── index.ts        # Service, TeamMember, Testimonial, ContactInfo, ...
@@ -83,7 +88,7 @@ index.css design tokens ──▶ Tailwind utilities used everywhere
 - **Content is data.** Sections never hard-code copy; they render typed objects from `src/constants`.
   Changing text, services, team members, or testimonials never requires touching JSX.
 - **Frontend only.** The site is fully static: no forms, no API calls, no server. Contact
-  details are read from `VITE_CONTACT_*` env vars at build time (see "Contact details" below).
+  details are read from `VITE_CONTACT_*` env vars at build time (see "Contact details" below). The legal pages are standalone HTML pages (see "Legal pages").
 - **Path alias.** `@/` maps to `src/` (configured in both `vite.config.ts` and `tsconfig.app.json`).
 
 ---
@@ -157,7 +162,26 @@ To **change the brand color**, edit the `--color-olive-*` values in `index.css`.
 | **CapabilityDemo**   | `#demo`     | "Proof of work" with two labs: **Theme lab** (live site theme switch, accent token swatches, corner radius, generated CSS snippet, live mini-site preview) and **Performance lab** (toggle optimizations to see LCP / TBT / CLS / page weight and an animated score ring react). |
 | **About**            | `#about`    | Philosophy copy, stats grid, 4 working principles, team cards (initials fallback for avatars), testimonials linked to services.                                              |
 | **Contact**          | `#contact`  | Static contact card (name, email, phone, location, response time) plus "Email us" (pre-filled `mailto:`), "Book a call" or "Call us" buttons. Values come from env vars; unset ones are hidden. |
-| **Footer**           | —           | Logo/tagline, navigation, services, legal placeholder links, copyright, back-to-top.                                                                                        |
+| **Footer**           | —           | Logo/tagline, navigation, services, links to the legal pages, copyright, back-to-top.                                                                                       |
+
+### Legal pages
+
+`/privacy`, `/terms` and `/cookies` are separate pages, not sections of the landing page. Vite
+builds them as extra HTML entry points (`build.rollupOptions.input` in `vite.config.ts`), each with
+its own `<title>` and meta description. They share `src/legal.tsx` and `pages/LegalPage.tsx`; the
+HTML file picks the document through `data-page` on `#root`.
+
+- Text lives in `src/constants/legal.ts` (one `LegalDocument` per policy: paragraphs, lists, a
+  table, or a `{ contact: true }` block that renders the contact details from env vars).
+- `VITE_LEGAL_ENTITY` (registered business name) and `VITE_LEGAL_JURISDICTION` (governing law)
+  fill in the policies. Contact details reuse `VITE_CONTACT_*`.
+- Bump `LEGAL_LAST_UPDATED` whenever a policy changes.
+- The policies describe what the site does today: no forms, no analytics, no cookies, only the
+  `theme` key in localStorage, hosted on Vercel. If you add analytics, embeds or a form, update
+  them (and add a consent banner for any non-essential cookies).
+- To add a page: add the id to `LegalDocumentId`, a document to `LEGAL_DOCUMENTS`, an entry to
+  `LEGAL_LINKS`, an HTML file copied from `privacy.html` with the new `data-page`, and its name to
+  the `input` list in `vite.config.ts`.
 
 ### Accessibility baseline
 
@@ -214,7 +238,8 @@ hashed `/assets/*` files, and security headers. `package.json` declares the Node
    `vercel.json`, so leave the build options as detected.
 2. Under **Settings → Environment Variables**, add the variables from `.env.example`
    (`VITE_SITE_URL`, `VITE_CONTACT_NAME`, `VITE_CONTACT_EMAIL`, `VITE_CONTACT_PHONE`,
-   `VITE_CONTACT_ADDRESS`, `VITE_CONTACT_BOOKING_URL`). Enable them for **Production** and,
+   `VITE_CONTACT_ADDRESS`, `VITE_CONTACT_BOOKING_URL`, `VITE_LEGAL_ENTITY`,
+   `VITE_LEGAL_JURISDICTION`). Enable them for **Production** and,
    if you want, **Preview**.
 3. Set the **Production Branch** to `main` (Settings → Git). Pushes to `main` deploy to
    production; pushes to other branches (e.g. `dev`) get preview URLs.
@@ -258,7 +283,8 @@ CLI alternative: `npm i -g vercel`, then `vercel link`, `vercel env pull .env.lo
 | Team                                | `TEAM` in `content.ts` (photos go in `public/team/`, then set `avatarUrl: '/team/name.jpg'`) |
 | Testimonials                        | `TESTIMONIALS` in `content.ts`                   |
 | Colors / fonts / radii              | `src/index.css`                                  |
-| Page title & meta description       | `index.html`                                     |
+| Page title & meta description       | `index.html` (legal pages: `privacy.html`, ...)  |
+| Privacy / Terms / Cookie policies   | `src/constants/legal.ts`                         |
 
 ### Adding a new section
 
@@ -295,8 +321,8 @@ CLI alternative: `npm i -g vercel`, then `vercel link`, `vercel env pull .env.lo
 - [ ] Final logo: replace the SVG in `Logo.tsx` and `public/favicon.svg`. Add `apple-touch-icon` and a web manifest.
 
 ### Legal & privacy
-- [ ] Write and publish the Privacy Policy, Terms and Cookie Policy (update `LEGAL_LINKS`; currently `#` placeholders).
-- [ ] Add a cookie-consent banner if analytics or marketing tags set cookies (GDPR / ePrivacy), with Consent Mode v2 for Google tags.
+- [ ] Set `VITE_LEGAL_ENTITY` and `VITE_LEGAL_JURISDICTION`, then have a lawyer review `src/constants/legal.ts` for your jurisdiction.
+- [ ] Add a cookie-consent banner if analytics or marketing tags set cookies (GDPR / ePrivacy), with Consent Mode v2 for Google tags, and update the Cookie Policy.
 - [ ] Add company legal details (registered name, address, tax ID) to the footer if required in your jurisdiction.
 
 ### SEO & analytics

@@ -2,7 +2,7 @@ import { CalendarDays, Mail, Phone } from 'lucide-react'
 import { Button } from '@/components/Button'
 import { Section } from '@/components/Section'
 import { SectionHeading } from '@/components/SectionHeading'
-import { CONTACT, CONTACT_DETAILS, SITE } from '@/constants/site'
+import { CONTACT, CONTACT_DETAILS, LEGAL_LINKS, SITE } from '@/constants/site'
 
 const MAIL_SUBJECT = encodeURIComponent(`Project enquiry: ${SITE.name}`)
 const MAIL_BODY = encodeURIComponent(
@@ -77,7 +77,11 @@ export function Contact() {
           </ul>
           <p className="mt-8 border-t border-line pt-6 text-sm leading-relaxed text-muted">
             Helpful to include: your company, what you need help with (web, SEO &amp; analytics, or bespoke software), your
-            timeline and, if you have one, a budget range.
+            timeline and, if you have one, a budget range. See our{' '}
+            <a href={LEGAL_LINKS[0].href} className="underline underline-offset-2 hover:text-accent">
+              privacy policy
+            </a>{' '}
+            for how we handle your details.
           </p>
           {!hasChannel && import.meta.env.DEV && (
             <p className="mt-4 rounded-xl border border-dashed border-line p-4 font-mono text-xs text-muted">

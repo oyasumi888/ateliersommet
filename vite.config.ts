@@ -8,4 +8,12 @@ export default defineConfig({
   resolve: {
     alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
   },
+  build: {
+    rollupOptions: {
+      // Multi-page build: the landing page plus one standalone page per legal document.
+      input: Object.fromEntries(
+        ['index', 'privacy', 'terms', 'cookies'].map((name) => [name, fileURLToPath(new URL(`./${name}.html`, import.meta.url))]),
+      ),
+    },
+  },
 })

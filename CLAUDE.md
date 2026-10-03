@@ -24,3 +24,4 @@ Single-page marketing site for the Atelier Sommet agency. Vite 8 + React 19 + Ty
 - `src/index.css` holds every design token. Tailwind v4 is configured in CSS via `@theme` (there is no `tailwind.config.js`). Components use semantic utilities (`bg-bg`, `bg-surface`, `text-fg`, `text-muted`, `border-line`, `text-accent`, `bg-accent-strong`) that switch with `<html data-theme>`.
 - The `@/` import alias maps to `src/`.
 - Frontend only (no backend). Contact details come from `VITE_CONTACT_*` env vars read in `src/constants/site.ts` (see `.env.example`); unset ones are hidden.
+- Multi-page build: `index.html` (landing) plus `privacy.html`, `terms.html`, `cookies.html` (entry `src/legal.tsx`, layout `src/pages/LegalPage.tsx`, text in `src/constants/legal.ts`), listed in `vite.config.ts` → `build.rollupOptions.input`. Nav links are root-relative (`/#services`) so they work from those pages.

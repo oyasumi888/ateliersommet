@@ -15,7 +15,7 @@ export function Footer() {
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted">{SITE.tagline}.</p>
           </div>
           <FooterColumn title="Navigate" links={NAV_LINKS.map((l) => ({ label: l.label, href: l.href }))} />
-          <FooterColumn title="Services" links={SERVICES.map((s) => ({ label: s.shortTitle, href: '#services' }))} />
+          <FooterColumn title="Services" links={SERVICES.map((s) => ({ label: s.shortTitle, href: '/#services' }))} />
           <FooterColumn title="Legal" links={LEGAL_LINKS} />
         </div>
 
@@ -23,7 +23,7 @@ export function Footer() {
           <p>
             © {year} {SITE.name}. All rights reserved.
           </p>
-          <a href="#home" className="inline-flex items-center gap-1.5 transition-colors hover:text-fg">
+          <a href="#" className="inline-flex items-center gap-1.5 transition-colors hover:text-fg">
             Back to top <ArrowUp className="size-3.5" aria-hidden />
           </a>
         </div>

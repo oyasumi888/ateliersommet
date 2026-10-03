@@ -30,10 +30,10 @@ export const CONTACT: ContactInfo = {
 }
 
 export const NAV_LINKS: NavLink[] = [
-  { label: 'Services', href: '#services' },
-  { label: 'Capabilities', href: '#demo' },
-  { label: 'About', href: '#about' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Services', href: '/#services' },
+  { label: 'Capabilities', href: '/#demo' },
+  { label: 'About', href: '/#about' },
+  { label: 'Contact', href: '/#contact' },
 ]
 
 /** Only the details that are configured are listed. */
@@ -45,9 +45,9 @@ export const CONTACT_DETAILS: ContactDetail[] = [
   { label: 'Response time', value: SITE.responseTime, icon: Clock },
 ].filter((d): d is ContactDetail => Boolean(d))
 
-/** TODO(launch): create these pages (or link to hosted policies). */
+/** Standalone pages (`privacy.html`, ...) served at clean URLs. Content: `constants/legal.ts`. */
 export const LEGAL_LINKS: LegalLink[] = [
-  { label: 'Privacy Policy', href: '#privacy' },
-  { label: 'Terms of Service', href: '#terms' },
-  { label: 'Cookie Policy', href: '#cookies' },
+  { label: 'Privacy Policy', href: '/privacy' },
+  { label: 'Terms of Service', href: '/terms' },
+  { label: 'Cookie Policy', href: '/cookies' },
 ]

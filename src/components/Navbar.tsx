@@ -8,7 +8,7 @@ import { Container } from './Container'
 import { Logo } from './Logo'
 import { ThemeToggle } from './ThemeToggle'
 
-const SECTION_IDS = NAV_LINKS.map((l) => l.href.slice(1))
+const SECTION_IDS = NAV_LINKS.map((l) => l.href.slice(2))
 
 export function Navbar() {
   const [open, setOpen] = useState(false)
@@ -43,7 +43,7 @@ export function Navbar() {
         <nav aria-label="Primary" className="hidden md:block">
           <ul className="flex items-center gap-1">
             {NAV_LINKS.map((link) => {
-              const isActive = active === link.href.slice(1)
+              const isActive = active === link.href.slice(2)
               return (
                 <li key={link.href}>
                   <a

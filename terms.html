@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Terms of Service | Atelier Sommet</title>
+    <meta name="description" content="The terms that apply when you use the Atelier Sommet website." />
+    <meta name="theme-color" content="#0F0F0F" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script>
+      // Apply the saved theme before first paint to avoid a flash of the wrong theme.
+      try {
+        const t = localStorage.getItem('theme')
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <div id="root" data-page="terms"></div>
+    <script type="module" src="/src/legal.tsx"></script>
+  </body>
+</html>

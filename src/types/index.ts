@@ -9,7 +9,8 @@ export type SectionId = 'home' | 'services' | 'demo' | 'about' | 'contact'
 
 export interface NavLink {
   label: string
-  href: `#${SectionId}`
+  /** Root-relative so the links also work from the legal pages. */
+  href: `/#${SectionId}`
 }
 
 export interface ContactDetail {
@@ -42,6 +43,33 @@ export interface ContactInfo {
 export interface LegalLink {
   label: string
   href: string
+}
+
+/* ------------------------------------------------------------------ */
+/* Legal pages                                                         */
+/* ------------------------------------------------------------------ */
+
+export type LegalDocumentId = 'privacy' | 'terms' | 'cookies'
+
+/** A paragraph, a bullet list, a table, or the site's contact details. */
+export type LegalBlock =
+  | string
+  | { list: string[] }
+  | { table: { head: string[]; rows: string[][] } }
+  | { contact: true }
+
+export interface LegalSection {
+  heading: string
+  body: LegalBlock[]
+}
+
+export interface LegalDocument {
+  id: LegalDocumentId
+  title: string
+  /** Short summary, used for the meta description. */
+  description: string
+  intro: string[]
+  sections: LegalSection[]
 }
 
 /* ------------------------------------------------------------------ */
