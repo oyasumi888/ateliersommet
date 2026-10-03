@@ -26,11 +26,17 @@ export interface SiteConfig {
   description: string
   /** Production URL. Placeholder until the domain is attached. */
   url: string
-  email: string
-  phone: string
-  location: string
   /** Typical first-response time shown next to the contact form. */
   responseTime: string
+}
+
+/** Contact details read from `VITE_CONTACT_*` env vars; empty string = not configured. */
+export interface ContactInfo {
+  name: string
+  email: string
+  phone: string
+  address: string
+  bookingUrl: string
 }
 
 export interface LegalLink {
@@ -102,34 +108,4 @@ export interface Testimonial {
   company: string
   /** Which service the testimonial relates to. */
   serviceId?: ServiceId
-}
-
-/* ------------------------------------------------------------------ */
-/* Contact form                                                        */
-/* ------------------------------------------------------------------ */
-
-export type BudgetRange = '' | 'under-5k' | '5k-15k' | '15k-50k' | '50k-plus'
-
-export interface ContactFormValues {
-  name: string
-  email: string
-  company: string
-  /** Service the visitor is interested in; empty string = not selected. */
-  service: ServiceId | 'other' | ''
-  budget: BudgetRange
-  message: string
-  consent: boolean
-  /** Honeypot field: real users never fill it. */
-  website: string
-}
-
-export type ContactFormField = keyof ContactFormValues
-
-export type ContactFormErrors = Partial<Record<ContactFormField, string>>
-
-export type FormStatus = 'idle' | 'submitting' | 'success' | 'error'
-
-export interface SelectOption<T extends string = string> {
-  value: T
-  label: string
 }

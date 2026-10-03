@@ -1,6 +1,5 @@
 import { Code2, Compass, Handshake, ShieldCheck } from 'lucide-react'
-import type { BudgetRange, Principle, SelectOption, Stat, TeamMember, Testimonial } from '@/types'
-import { SERVICES } from './services'
+import type { Principle, Stat, TeamMember, Testimonial } from '@/types'
 
 /* Hero ---------------------------------------------------------------- */
 
@@ -104,18 +103,4 @@ export const TESTIMONIALS: Testimonial[] = [
     company: 'Manufacturing SME',
     serviceId: 'software',
   },
-]
-
-/* Contact form options ------------------------------------------------ */
-
-export const SERVICE_OPTIONS: SelectOption[] = [
-  ...SERVICES.map((s) => ({ value: s.id, label: s.title })),
-  { value: 'other', label: 'Something else' },
-]
-
-export const BUDGET_OPTIONS: SelectOption<Exclude<BudgetRange, ''>>[] = [
-  { value: 'under-5k', label: 'Under $5k' },
-  { value: '5k-15k', label: '$5k – $15k' },
-  { value: '15k-50k', label: '$15k – $50k' },
-  { value: '50k-plus', label: '$50k+' },
 ]
