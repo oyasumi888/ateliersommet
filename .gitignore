@@ -4,9 +4,12 @@ dist-ssr
 *.local
 .env
 .env.*
-!.env.example
+.env.example
+.env.local
 *.tsbuildinfo
 .DS_Store
 .idea
 *.log
+prompt.md
+CLAUDE.md
 .vercel
