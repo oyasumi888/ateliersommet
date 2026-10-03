@@ -2,8 +2,10 @@ import { useId, useMemo, useState, type CSSProperties, type ReactNode } from 're
 import { Gauge, Moon, Palette, Sun } from 'lucide-react'
 import { Section } from '@/components/Section'
 import { SectionHeading } from '@/components/SectionHeading'
+import { useLocale } from '@/hooks/useLocale'
 import { useTheme } from '@/hooks/useTheme'
 import { cn } from '@/lib/cn'
+import type { OptimizationId } from '@/types'
 
 type DemoTab = 'theme' | 'performance'
 
@@ -13,6 +15,7 @@ type DemoTab = 'theme' | 'performance'
  */
 export function CapabilityDemo() {
   const [tab, setTab] = useState<DemoTab>('theme')
+  const { t } = useLocale()
 
   return (
     <Section id="demo" labelledBy="demo-title" className="overflow-hidden border-t border-line">
@@ -20,16 +23,16 @@ export function CapabilityDemo() {
       <div className="relative">
         <SectionHeading
           id="demo-title"
-          eyebrow="Capabilities"
-          title="Don't take our word for it — poke at it."
-          description="This page is built with the same stack and standards we ship to clients. Try the live design-token switcher, or see how individual optimizations move Core Web Vitals."
+          eyebrow={t.demo.eyebrow}
+          title={t.demo.title}
+          description={t.demo.description}
         />
 
-        <div role="radiogroup" aria-label="Choose a demo" className="mt-10 inline-flex rounded-full border border-line bg-surface p-1">
+        <div role="radiogroup" aria-label={t.demo.chooseDemo} className="mt-10 inline-flex rounded-full border border-line bg-surface p-1">
           {(
             [
-              { id: 'theme', label: 'Theme lab', icon: Palette },
-              { id: 'performance', label: 'Performance lab', icon: Gauge },
+              { id: 'theme', label: t.demo.themeLab, icon: Palette },
+              { id: 'performance', label: t.demo.performanceLab, icon: Gauge },
             ] as const
           ).map(({ id, label, icon: Icon }) => (
             <button
@@ -67,13 +70,15 @@ const ACCENTS = [
 ] as const
 
 const RADII = [
-  { label: 'Sharp', value: '4px' },
-  { label: 'Soft', value: '14px' },
-  { label: 'Round', value: '28px' },
+  { id: 'sharp', value: '4px' },
+  { id: 'soft', value: '14px' },
+  { id: 'round', value: '28px' },
 ] as const
 
 function ThemeLab() {
   const { theme, setTheme } = useTheme()
+  const { t } = useLocale()
+  const d = t.demo
   const [accent, setAccent] = useState<string>(ACCENTS[2].value)
   const [radius, setRadius] = useState<string>(RADII[1].value)
 
@@ -83,18 +88,18 @@ function ThemeLab() {
   return (
     <div className="grid gap-6 lg:grid-cols-[320px_1fr]">
       <div className="space-y-7 rounded-[var(--radius-card)] border border-line bg-surface p-6">
-        <Control label="Site theme" hint="Applies to the whole page and is remembered.">
+        <Control label={d.siteTheme} hint={d.siteThemeHint}>
           <div className="grid grid-cols-2 gap-2">
-            {(['dark', 'light'] as const).map((t) => (
-              <OptionButton key={t} pressed={theme === t} onClick={() => setTheme(t)}>
-                {t === 'dark' ? <Moon className="size-4" aria-hidden /> : <Sun className="size-4" aria-hidden />}
-                <span className="capitalize">{t}</span>
+            {(['dark', 'light'] as const).map((mode) => (
+              <OptionButton key={mode} pressed={theme === mode} onClick={() => setTheme(mode)}>
+                {mode === 'dark' ? <Moon className="size-4" aria-hidden /> : <Sun className="size-4" aria-hidden />}
+                {d.themes[mode]}
               </OptionButton>
             ))}
           </div>
         </Control>
 
-        <Control label="Accent token" hint="Swaps a single CSS variable.">
+        <Control label={d.accentToken} hint={d.accentHint}>
           <div className="flex gap-3">
             {ACCENTS.map((a) => (
               <button
@@ -114,11 +119,11 @@ function ThemeLab() {
           </div>
         </Control>
 
-        <Control label="Corner radius">
+        <Control label={d.cornerRadius}>
           <div className="grid grid-cols-3 gap-2">
             {RADII.map((r) => (
               <OptionButton key={r.value} pressed={radius === r.value} onClick={() => setRadius(r.value)}>
-                {r.label}
+                {d.radii[r.id]}
               </OptionButton>
             ))}
           </div>
@@ -134,33 +139,33 @@ function ThemeLab() {
       {/* Live preview */}
       <div
         style={previewStyle}
-        aria-label="Theme preview"
+        aria-label={d.previewLabel}
         role="img"
         className="overflow-hidden rounded-[var(--radius-card)] border border-line bg-bg transition-colors"
       >
         <div className="flex items-center justify-between border-b border-line px-6 py-4">
           <span className="font-semibold">Acme Analytics</span>
           <span className="rounded-[var(--demo-radius)] bg-[var(--demo-accent)] px-4 py-1.5 text-xs font-medium text-paper transition-all">
-            Get started
+            {d.preview.getStarted}
           </span>
         </div>
         <div className="grid gap-6 p-6 sm:p-8 md:grid-cols-2">
           <div>
-            <p className="font-mono text-xs text-[var(--demo-accent)] brightness-125 transition-colors">New · v2.0</p>
-            <p className="mt-2 text-2xl font-semibold tracking-tight">Know which campaigns actually pay off.</p>
-            <p className="mt-3 text-sm text-muted">Server-side tracking, clean attribution and dashboards your CFO trusts.</p>
+            <p className="font-mono text-xs text-[var(--demo-accent)] brightness-125 transition-colors">{d.preview.badge}</p>
+            <p className="mt-2 text-2xl font-semibold tracking-tight">{d.preview.headline}</p>
+            <p className="mt-3 text-sm text-muted">{d.preview.body}</p>
             <div className="mt-5 flex gap-2">
               <span className="rounded-[var(--demo-radius)] bg-[var(--demo-accent)] px-4 py-2 text-sm text-paper transition-all">
-                Start free trial
+                {d.preview.startTrial}
               </span>
-              <span className="rounded-[var(--demo-radius)] border border-line px-4 py-2 text-sm transition-all">Book demo</span>
+              <span className="rounded-[var(--demo-radius)] border border-line px-4 py-2 text-sm transition-all">{d.preview.bookDemo}</span>
             </div>
           </div>
           <div className="space-y-3">
             {[72, 48, 88].map((w, i) => (
               <div key={i} className="rounded-[var(--demo-radius)] border border-line bg-surface p-4 transition-all">
                 <div className="flex justify-between text-xs text-muted">
-                  <span>Channel {i + 1}</span>
+                  <span>{d.preview.channel(i + 1)}</span>
                   <span className="font-mono">{w}%</span>
                 </div>
                 <div className="mt-2 h-2 overflow-hidden rounded-full bg-surface-2">
@@ -209,9 +214,7 @@ function OptionButton({ pressed, onClick, children }: { pressed: boolean; onClic
 /* ------------------------------------------------------------------ */
 
 interface Optimization {
-  id: string
-  label: string
-  detail: string
+  id: OptimizationId
   /** Effect on each metric (milliseconds / unitless CLS / kilobytes). */
   lcp: number
   tbt: number
@@ -222,11 +225,11 @@ interface Optimization {
 const BASELINE = { lcp: 4800, tbt: 780, cls: 0.24, kb: 4200 }
 
 const OPTIMIZATIONS: Optimization[] = [
-  { id: 'images', label: 'Modern images', detail: 'AVIF/WebP, responsive sizes, lazy loading', lcp: -1700, tbt: 0, cls: -0.06, kb: -2300 },
-  { id: 'split', label: 'Code splitting', detail: 'Route-level chunks, tree-shaking', lcp: -450, tbt: -330, cls: 0, kb: -620 },
-  { id: 'third', label: 'Third-party diet', detail: 'Defer tags, server-side tracking', lcp: -500, tbt: -300, cls: -0.03, kb: -540 },
-  { id: 'fonts', label: 'Font strategy', detail: 'Subset, preload, size-adjust fallbacks', lcp: -350, tbt: 0, cls: -0.1, kb: -180 },
-  { id: 'edge', label: 'Edge caching', detail: 'CDN, immutable assets, Brotli', lcp: -700, tbt: -40, cls: 0, kb: -260 },
+  { id: 'images', lcp: -1700, tbt: 0, cls: -0.06, kb: -2300 },
+  { id: 'split', lcp: -450, tbt: -330, cls: 0, kb: -620 },
+  { id: 'third', lcp: -500, tbt: -300, cls: -0.03, kb: -540 },
+  { id: 'fonts', lcp: -350, tbt: 0, cls: -0.1, kb: -180 },
+  { id: 'edge', lcp: -700, tbt: -40, cls: 0, kb: -260 },
 ]
 
 /** Rough, illustrative score — the real Lighthouse uses log-normal curves per metric. */
@@ -238,7 +241,9 @@ function scoreFor({ lcp, tbt, cls }: typeof BASELINE): number {
 }
 
 function PerformanceLab() {
-  const [enabled, setEnabled] = useState<Set<string>>(new Set(['images']))
+  const { t } = useLocale()
+  const d = t.demo
+  const [enabled, setEnabled] = useState<Set<OptimizationId>>(new Set(['images']))
 
   const metrics = useMemo(() => {
     const m = { ...BASELINE }
@@ -255,7 +260,7 @@ function PerformanceLab() {
 
   const score = scoreFor(metrics)
 
-  const toggle = (id: string) =>
+  const toggle = (id: OptimizationId) =>
     setEnabled((prev) => {
       const next = new Set(prev)
       if (next.has(id)) next.delete(id)
@@ -266,9 +271,9 @@ function PerformanceLab() {
   return (
     <div className="grid gap-6 lg:grid-cols-[1fr_1.1fr]">
       <fieldset className="rounded-[var(--radius-card)] border border-line bg-surface p-6">
-        <legend className="sr-only">Optimizations</legend>
-        <p className="text-sm font-medium">Toggle optimizations</p>
-        <p className="mt-0.5 text-xs text-muted">Baseline: a typical template site with unoptimized media and tag bloat.</p>
+        <legend className="sr-only">{d.optimizationsLegend}</legend>
+        <p className="text-sm font-medium">{d.toggleOptimizations}</p>
+        <p className="mt-0.5 text-xs text-muted">{d.baseline}</p>
         <ul className="mt-5 space-y-2">
           {OPTIMIZATIONS.map((o) => {
             const on = enabled.has(o.id)
@@ -281,8 +286,8 @@ function PerformanceLab() {
                   )}
                 >
                   <span>
-                    <span className="block text-sm font-medium">{o.label}</span>
-                    <span className="block text-xs text-muted">{o.detail}</span>
+                    <span className="block text-sm font-medium">{d.optimizations[o.id].label}</span>
+                    <span className="block text-xs text-muted">{d.optimizations[o.id].detail}</span>
                   </span>
                   <input type="checkbox" checked={on} onChange={() => toggle(o.id)} className="peer sr-only" />
                   <span
@@ -308,23 +313,23 @@ function PerformanceLab() {
 
       <div className="rounded-[var(--radius-card)] border border-line bg-surface p-6 sm:p-8" aria-live="polite">
         <div className="flex flex-col items-center gap-8 sm:flex-row">
-          <ScoreRing score={score} />
+          <ScoreRing score={score} label={d.score} />
           <div className="w-full flex-1 space-y-5">
-            <MetricBar label="Largest Contentful Paint" value={`${(metrics.lcp / 1000).toFixed(1)} s`} ratio={metrics.lcp / BASELINE.lcp} good={metrics.lcp <= 2500} />
-            <MetricBar label="Total Blocking Time" value={`${Math.round(metrics.tbt)} ms`} ratio={metrics.tbt / BASELINE.tbt} good={metrics.tbt <= 200} />
-            <MetricBar label="Cumulative Layout Shift" value={metrics.cls.toFixed(2)} ratio={metrics.cls / BASELINE.cls} good={metrics.cls <= 0.1} />
-            <MetricBar label="Page weight" value={`${(metrics.kb / 1000).toFixed(1)} MB`} ratio={metrics.kb / BASELINE.kb} good={metrics.kb <= 1500} />
+            <MetricBar label={d.metrics.lcp} value={`${(metrics.lcp / 1000).toFixed(1)} s`} ratio={metrics.lcp / BASELINE.lcp} good={metrics.lcp <= 2500} />
+            <MetricBar label={d.metrics.tbt} value={`${Math.round(metrics.tbt)} ms`} ratio={metrics.tbt / BASELINE.tbt} good={metrics.tbt <= 200} />
+            <MetricBar label={d.metrics.cls} value={metrics.cls.toFixed(2)} ratio={metrics.cls / BASELINE.cls} good={metrics.cls <= 0.1} />
+            <MetricBar label={d.metrics.weight} value={`${(metrics.kb / 1000).toFixed(1)} MB`} ratio={metrics.kb / BASELINE.kb} good={metrics.kb <= 1500} />
           </div>
         </div>
         <p className="mt-6 text-xs text-muted">
-          Illustrative model based on typical audit results. We measure your real field data (CrUX) before quoting any gains.
+          {d.disclaimer}
         </p>
       </div>
     </div>
   )
 }
 
-function ScoreRing({ score }: { score: number }) {
+function ScoreRing({ score, label }: { score: number; label: string }) {
   const r = 52
   const c = 2 * Math.PI * r
   const color = score >= 90 ? 'var(--color-olive-400)' : score >= 50 ? '#d4a72c' : '#e5534b'
@@ -350,7 +355,7 @@ function ScoreRing({ score }: { score: number }) {
           <p className="font-mono text-4xl font-semibold" style={{ color }}>
             {score}
           </p>
-          <p className="text-[11px] text-muted">Performance</p>
+          <p className="text-[11px] text-muted">{label}</p>
         </div>
       </div>
     </div>

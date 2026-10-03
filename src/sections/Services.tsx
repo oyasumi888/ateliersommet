@@ -3,32 +3,35 @@ import { ArrowRight, CheckCircle2 } from 'lucide-react'
 import { Button } from '@/components/Button'
 import { Section } from '@/components/Section'
 import { SectionHeading } from '@/components/SectionHeading'
-import { SERVICES } from '@/constants/services'
+import { getServices } from '@/constants/services'
+import { useLocale } from '@/hooks/useLocale'
 import { cn } from '@/lib/cn'
 import type { ServiceId } from '@/types'
 
 /**
  * Services as an accessible tab list (WAI-ARIA tabs pattern: arrow keys, Home/End).
- * Content comes entirely from `constants/services.ts`.
+ * Content comes from `constants/services.ts` and the `services` key of the i18n dictionaries.
  */
 export function Services() {
-  const [activeId, setActiveId] = useState<ServiceId>(SERVICES[0].id)
+  const { t } = useLocale()
+  const services = getServices(t)
+  const [activeId, setActiveId] = useState<ServiceId>(services[0].id)
   const tabRefs = useRef<Record<string, HTMLButtonElement | null>>({})
-  const active = SERVICES.find((s) => s.id === activeId) ?? SERVICES[0]
+  const active = services.find((s) => s.id === activeId) ?? services[0]
 
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    const i = SERVICES.findIndex((s) => s.id === activeId)
+    const i = services.findIndex((s) => s.id === activeId)
     const nextIndex = {
-      ArrowRight: (i + 1) % SERVICES.length,
-      ArrowDown: (i + 1) % SERVICES.length,
-      ArrowLeft: (i - 1 + SERVICES.length) % SERVICES.length,
-      ArrowUp: (i - 1 + SERVICES.length) % SERVICES.length,
+      ArrowRight: (i + 1) % services.length,
+      ArrowDown: (i + 1) % services.length,
+      ArrowLeft: (i - 1 + services.length) % services.length,
+      ArrowUp: (i - 1 + services.length) % services.length,
       Home: 0,
-      End: SERVICES.length - 1,
+      End: services.length - 1,
     }[e.key]
     if (nextIndex === undefined) return
     e.preventDefault()
-    const next = SERVICES[nextIndex]
+    const next = services[nextIndex]
     setActiveId(next.id)
     tabRefs.current[next.id]?.focus()
   }
@@ -37,14 +40,14 @@ export function Services() {
     <Section id="services" labelledBy="services-title" className="border-t border-line">
       <SectionHeading
         id="services-title"
-        eyebrow="What we do"
-        title="Three disciplines. One accountable team."
-        description="Most growth problems sit between marketing and engineering. We cover both sides, so nothing gets lost in the handoff."
+        eyebrow={t.services.eyebrow}
+        title={t.services.title}
+        description={t.services.description}
       />
 
       <div className="mt-12 grid gap-8 lg:grid-cols-[minmax(0,320px)_1fr]">
-        <div role="tablist" aria-label="Services" aria-orientation="vertical" onKeyDown={onKeyDown} className="flex flex-col gap-3">
-          {SERVICES.map((service, index) => {
+        <div role="tablist" aria-label={t.services.tablistLabel} aria-orientation="vertical" onKeyDown={onKeyDown} className="flex flex-col gap-3">
+          {services.map((service, index) => {
             const selected = service.id === activeId
             const Icon = service.icon
             return (
@@ -112,7 +115,7 @@ export function Services() {
 
           <div className="mt-8 grid gap-8 md:grid-cols-2">
             <div>
-              <h4 className="font-mono text-xs tracking-[0.2em] text-muted uppercase">Deliverables</h4>
+              <h4 className="font-mono text-xs tracking-[0.2em] text-muted uppercase">{t.services.deliverables}</h4>
               <ul className="mt-4 space-y-2.5">
                 {active.deliverables.map((d) => (
                   <li key={d} className="flex items-start gap-2.5 text-sm">
@@ -123,7 +126,7 @@ export function Services() {
               </ul>
             </div>
             <div>
-              <h4 className="font-mono text-xs tracking-[0.2em] text-muted uppercase">Typical stack</h4>
+              <h4 className="font-mono text-xs tracking-[0.2em] text-muted uppercase">{t.services.typicalStack}</h4>
               <ul className="mt-4 flex flex-wrap gap-2">
                 {active.stack.map((tech) => (
                   <li key={tech} className="rounded-full border border-line px-3 py-1 font-mono text-xs text-muted">
@@ -132,7 +135,7 @@ export function Services() {
                 ))}
               </ul>
               <Button href="#contact" variant="secondary" className="mt-8">
-                Discuss a {active.shortTitle.toLowerCase()} project
+                {t.services.discuss(active.shortTitle)}
                 <ArrowRight className="size-4" aria-hidden />
               </Button>
             </div>

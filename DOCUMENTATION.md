@@ -5,7 +5,8 @@ Single-page marketing site for a software development & technical marketing agen
 Built to be fast, accessible, typed end-to-end, and easy to iterate on before and after launch.
 
 > The agency name "Atelier Sommet" comes from the repository name. Every brand string lives in
-> `src/constants/site.ts`, so renaming is a one-file change.
+> `src/constants/site.ts`, so renaming is a one-file change. All visible copy is translated
+> (English / Spanish) in `src/constants/i18n/`.
 
 ---
 
@@ -47,7 +48,9 @@ merging are small in-house modules, which keeps the JS bundle around 86 kB gzipp
 │   │   ├── Section.tsx         # <section> wrapper with anchor id + vertical rhythm
 │   │   ├── SectionHeading.tsx  # eyebrow / title / description
 │   │   ├── ThemeProvider.tsx   # React context provider for the site theme
-│   │   └── ThemeToggle.tsx     # dark/light icon button
+│   │   ├── ThemeToggle.tsx     # dark/light icon button
+│   │   ├── LanguageToggle.tsx  # EN/ES button next to the theme toggle
+│   │   └── LocaleProvider.tsx  # React context provider for the site language
 │   ├── pages/
 │   │   └── LegalPage.tsx       # layout for /privacy, /terms, /cookies
 │   ├── sections/           # One file per page section (compose components + constants)
@@ -58,14 +61,16 @@ merging are small in-house modules, which keeps the JS bundle around 86 kB gzipp
 │   │   ├── Contact.tsx
 │   │   └── Footer.tsx
 │   ├── constants/          # ALL copy & mock data. Edit content here, not in JSX.
-│   │   ├── services.ts         # SERVICES[] + getServiceById()
-│   │   ├── content.ts          # HERO, ABOUT, PRINCIPLES, STATS, TEAM, TESTIMONIALS
-│   │   ├── legal.ts            # Privacy Policy, Terms of Service, Cookie Policy content
-│   │   └── site.ts             # SITE config, CONTACT (from env), NAV_LINKS, CONTACT_DETAILS, LEGAL_LINKS
+│   │   ├── i18n/               # en.ts / es.ts: every visible string, one Dictionary per language
+│   │   ├── legal/              # en.ts / es.ts: policy text; shared.ts: entity & jurisdiction from env
+│   │   ├── services.ts         # service ids, icons, stacks + getServices(t)
+│   │   ├── content.ts          # principle icons + getPrinciples(t)
+│   │   └── site.ts             # SITE, CONTACT (from env), getNavLinks / getContactDetails / getLegalLinks
 │   ├── types/
 │   │   └── index.ts        # Service, TeamMember, Testimonial, ContactInfo, ...
 │   ├── hooks/
 │   │   ├── useTheme.ts         # theme state, persistence, context consumer
+│   │   ├── useLocale.ts        # language state, persistence, useDocumentMeta
 │   │   └── useActiveSection.ts # IntersectionObserver-driven nav highlighting
 │   └── lib/
 │       └── cn.ts               # className joiner
@@ -171,17 +176,33 @@ builds them as extra HTML entry points (`build.rollupOptions.input` in `vite.con
 its own `<title>` and meta description. They share `src/legal.tsx` and `pages/LegalPage.tsx`; the
 HTML file picks the document through `data-page` on `#root`.
 
-- Text lives in `src/constants/legal.ts` (one `LegalDocument` per policy: paragraphs, lists, a
+- Text lives in `src/constants/legal/en.ts` and `es.ts` (one `LegalDocument` per policy: paragraphs, lists, a
   table, or a `{ contact: true }` block that renders the contact details from env vars).
 - `VITE_LEGAL_ENTITY` (registered business name) and `VITE_LEGAL_JURISDICTION` (governing law)
   fill in the policies. Contact details reuse `VITE_CONTACT_*`.
 - Bump `LEGAL_LAST_UPDATED` whenever a policy changes.
 - The policies describe what the site does today: no forms, no analytics, no cookies, only the
-  `theme` key in localStorage, hosted on Vercel. If you add analytics, embeds or a form, update
+  `theme` and `lang` keys in localStorage, hosted on Vercel. If you add analytics, embeds or a form, update
   them (and add a consent banner for any non-essential cookies).
-- To add a page: add the id to `LegalDocumentId`, a document to `LEGAL_DOCUMENTS`, an entry to
-  `LEGAL_LINKS`, an HTML file copied from `privacy.html` with the new `data-page`, and its name to
+- To add a page: add the id to `LegalDocumentId`, a document to both `legal/en.ts` and `legal/es.ts`, its id to
+  `LEGAL_PAGES` in `site.ts` and `legal.links` in the dictionaries, an HTML file copied from `privacy.html` with the new `data-page`, and its name to
   the `input` list in `vite.config.ts`.
+
+### Languages (English / Spanish)
+
+The EN/ES button next to the theme toggle switches the whole site, legal pages included.
+
+- `hooks/useLocale.ts` holds the language: it defaults to the browser language (Spanish if it
+  starts with `es`, otherwise English), is saved in localStorage under `lang`, and sets
+  `<html lang>`. Components read strings with `const { t } = useLocale()`.
+- `constants/i18n/en.ts` and `es.ts` each implement the `Dictionary` type (`src/types/index.ts`),
+  so TypeScript fails the build if a translation is missing.
+- Language-independent data (ids, icons, tech stacks, hrefs) stays in `services.ts`,
+  `content.ts` and `site.ts`; helpers such as `getServices(t)` merge it with the copy.
+- The page `<title>` and meta description follow the language (`useDocumentMeta`). The static
+  ones in the HTML files are the English fallback for crawlers.
+- To add a language: add it to `Locale`, create `i18n/xx.ts` and `legal/xx.ts`, register them in
+  `i18n/index.ts` and `legal/index.ts`, and turn the toggle into a menu.
 
 ### Accessibility baseline
 
@@ -255,43 +276,45 @@ CLI alternative: `npm i -g vercel`, then `vercel link`, `vercel env pull .env.lo
    ```ts
    export type ServiceId = 'web' | 'seo' | 'software' | 'ecommerce'
    ```
-2. Append an object to `SERVICES` in `src/constants/services.ts` (TypeScript will flag any missing fields):
+2. Append the language-independent part to `SERVICE_BASE` in `src/constants/services.ts`:
    ```ts
-   {
-     id: 'ecommerce',
+   { id: 'ecommerce', icon: ShoppingCart, stack: ['Shopify Hydrogen', '…'] }
+   ```
+3. Add its copy under `services.items` in `src/constants/i18n/en.ts` and `es.ts` (TypeScript
+   flags any missing fields or language):
+   ```ts
+   ecommerce: {
      shortTitle: 'E-commerce',
      title: 'E-commerce Engineering',
      summary: '…',
-     icon: ShoppingCart,              // any lucide-react icon
      features: [{ title: '…', description: '…' }],
      deliverables: ['…'],
-     stack: ['Shopify Hydrogen', '…'],
      metric: { value: '+24%', label: 'avg. checkout conversion' },
-   }
+   },
    ```
-3. Done. The Services tabs and the footer list update automatically.
+4. Done. The Services tabs and the footer list update automatically.
 
 ### Modifying content
 
 | To change…                          | Edit                                             |
 | ----------------------------------- | ------------------------------------------------ |
-| Company name, URL, response time    | `SITE` in `src/constants/site.ts`                |
+| Any visible text (both languages)   | `src/constants/i18n/en.ts` and `es.ts`           |
+| Company name                        | `SITE` in `src/constants/site.ts`                |
+| Production URL                      | `VITE_SITE_URL` env var                          |
 | Contact name, email, phone, address | `VITE_CONTACT_*` in `.env.local` / host env vars |
-| Nav links                           | `NAV_LINKS` in `src/constants/site.ts` (`href` must be a `SectionId`) |
-| Hero headline / CTAs                | `HERO` in `src/constants/content.ts`             |
-| About copy, principles, stats       | `ABOUT`, `PRINCIPLES`, `STATS` in `content.ts`   |
-| Team                                | `TEAM` in `content.ts` (photos go in `public/team/`, then set `avatarUrl: '/team/name.jpg'`) |
-| Testimonials                        | `TESTIMONIALS` in `content.ts`                   |
+| Nav links                           | `NAV_SECTIONS` in `site.ts` + `nav.links` in the dictionaries |
+| Hero, about, stats, testimonials    | `hero` / `about` in the dictionaries             |
+| Team                                | `about.members` in the dictionaries (photos go in `public/team/`, then set `avatarUrl: '/team/name.jpg'`) |
 | Colors / fonts / radii              | `src/index.css`                                  |
-| Page title & meta description       | `index.html` (legal pages: `privacy.html`, ...)  |
-| Privacy / Terms / Cookie policies   | `src/constants/legal.ts`                         |
+| Page title & meta description       | `meta` in the dictionaries (static fallback in `index.html`) |
+| Privacy / Terms / Cookie policies   | `src/constants/legal/en.ts` and `es.ts`          |
 
 ### Adding a new section
 
 1. Add the id to `SectionId` in `src/types/index.ts`.
 2. Create `src/sections/MySection.tsx` using `<Section id="…" labelledBy="…">` and `<SectionHeading>`.
-3. Put its content in `src/constants/content.ts` (with a type in `src/types` if it is structured).
-4. Render it in `App.tsx`. Optionally add it to `NAV_LINKS`; nav highlighting picks it up automatically.
+3. Put its copy in the `Dictionary` type and both `src/constants/i18n` files.
+4. Render it in `App.tsx`. Optionally add it to `NAV_SECTIONS` in `site.ts` and `nav.links` in both dictionaries; nav highlighting picks it up automatically.
 
 ### Conventions
 
@@ -321,7 +344,7 @@ CLI alternative: `npm i -g vercel`, then `vercel link`, `vercel env pull .env.lo
 - [ ] Final logo: replace the SVG in `Logo.tsx` and `public/favicon.svg`. Add `apple-touch-icon` and a web manifest.
 
 ### Legal & privacy
-- [ ] Set `VITE_LEGAL_ENTITY` and `VITE_LEGAL_JURISDICTION`, then have a lawyer review `src/constants/legal.ts` for your jurisdiction.
+- [ ] Set `VITE_LEGAL_ENTITY` and `VITE_LEGAL_JURISDICTION`, then have a lawyer review `src/constants/legal/` (both languages) for your jurisdiction (in Mexico: the LFPDPPP and its aviso de privacidad requirements).
 - [ ] Add a cookie-consent banner if analytics or marketing tags set cookies (GDPR / ePrivacy), with Consent Mode v2 for Google tags, and update the Cookie Policy.
 - [ ] Add company legal details (registered name, address, tax ID) to the footer if required in your jurisdiction.
 

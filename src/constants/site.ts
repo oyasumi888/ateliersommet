@@ -1,20 +1,16 @@
 import { Clock, Mail, MapPin, Phone, UserRound } from 'lucide-react'
-import type { ContactDetail, ContactInfo, LegalLink, NavLink, SiteConfig } from '@/types'
+import type { ContactDetail, ContactInfo, Dictionary, LegalDocumentId, LegalLink, NavLink, SiteConfig } from '@/types'
 
 const env = (value: string | undefined) => value?.trim() ?? ''
 
 /**
- * Global site configuration. Every piece of company info rendered on the page comes from
- * here, so updating it before launch is a one-file change.
+ * Language-independent site settings. Translated copy (tagline, response time, labels)
+ * lives in `constants/i18n/*.ts`.
  * The production URL comes from `VITE_SITE_URL` (see `.env.example`).
  */
 export const SITE: SiteConfig = {
   name: 'Atelier Sommet',
-  tagline: 'Engineering-grade marketing & software',
-  description:
-    'A software development and technical marketing agency building high-converting websites, measurable growth and bespoke business software.',
   url: env(import.meta.env.VITE_SITE_URL).replace(/\/+$/, '') || 'https://example.com',
-  responseTime: 'Within 1 business day',
 }
 
 /**
@@ -29,25 +25,28 @@ export const CONTACT: ContactInfo = {
   bookingUrl: env(import.meta.env.VITE_CONTACT_BOOKING_URL),
 }
 
-export const NAV_LINKS: NavLink[] = [
-  { label: 'Services', href: '/#services' },
-  { label: 'Capabilities', href: '/#demo' },
-  { label: 'About', href: '/#about' },
-  { label: 'Contact', href: '/#contact' },
-]
+export const telHref = (phone: string) => `tel:${phone.replace(/[^+\d]/g, '')}`
+
+export const NAV_SECTIONS = ['services', 'demo', 'about', 'contact'] as const
+
+/** Root-relative section links, so they also work from the legal pages. */
+export const getNavLinks = (t: Dictionary): NavLink[] =>
+  NAV_SECTIONS.map((id) => ({ label: t.nav.links[id], href: `/#${id}` }))
 
 /** Only the details that are configured are listed. */
-export const CONTACT_DETAILS: ContactDetail[] = [
-  CONTACT.name && { label: 'Contact', value: CONTACT.name, icon: UserRound },
-  CONTACT.email && { label: 'Email', value: CONTACT.email, href: `mailto:${CONTACT.email}`, icon: Mail },
-  CONTACT.phone && { label: 'Phone', value: CONTACT.phone, href: `tel:${CONTACT.phone.replace(/[^+\d]/g, '')}`, icon: Phone },
-  CONTACT.address && { label: 'Location', value: CONTACT.address, icon: MapPin },
-  { label: 'Response time', value: SITE.responseTime, icon: Clock },
-].filter((d): d is ContactDetail => Boolean(d))
+export const getContactDetails = (t: Dictionary): ContactDetail[] => {
+  const l = t.contact.labels
+  return [
+    CONTACT.name && { label: l.contact, value: CONTACT.name, icon: UserRound },
+    CONTACT.email && { label: l.email, value: CONTACT.email, href: `mailto:${CONTACT.email}`, icon: Mail },
+    CONTACT.phone && { label: l.phone, value: CONTACT.phone, href: telHref(CONTACT.phone), icon: Phone },
+    CONTACT.address && { label: l.location, value: CONTACT.address, icon: MapPin },
+    { label: l.responseTime, value: t.common.responseTime, icon: Clock },
+  ].filter((d): d is ContactDetail => Boolean(d))
+}
 
-/** Standalone pages (`privacy.html`, ...) served at clean URLs. Content: `constants/legal.ts`. */
-export const LEGAL_LINKS: LegalLink[] = [
-  { label: 'Privacy Policy', href: '/privacy' },
-  { label: 'Terms of Service', href: '/terms' },
-  { label: 'Cookie Policy', href: '/cookies' },
-]
+const LEGAL_PAGES: LegalDocumentId[] = ['privacy', 'terms', 'cookies']
+
+/** Standalone pages (`privacy.html`, ...) served at clean URLs. Content: `constants/legal`. */
+export const getLegalLinks = (t: Dictionary): LegalLink[] =>
+  LEGAL_PAGES.map((id) => ({ label: t.legal.links[id], href: `/${id}` }))

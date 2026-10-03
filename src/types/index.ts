@@ -21,14 +21,11 @@ export interface ContactDetail {
   icon: LucideIcon
 }
 
+/** Language-independent site settings. Translated copy lives in `constants/i18n`. */
 export interface SiteConfig {
   name: string
-  tagline: string
-  description: string
   /** Production URL. Placeholder until the domain is attached. */
   url: string
-  /** Typical first-response time shown next to the contact form. */
-  responseTime: string
 }
 
 /** Contact details read from `VITE_CONTACT_*` env vars; empty string = not configured. */
@@ -136,4 +133,141 @@ export interface Testimonial {
   company: string
   /** Which service the testimonial relates to. */
   serviceId?: ServiceId
+}
+
+/* ------------------------------------------------------------------ */
+/* Internationalization                                                */
+/* ------------------------------------------------------------------ */
+
+export type Locale = 'en' | 'es'
+
+export type PrincipleId = 'measure' | 'code' | 'secure' | 'ownership'
+
+export type OptimizationId = 'images' | 'split' | 'third' | 'fonts' | 'edge'
+
+/** Translatable part of a service; id, icon and stack live in `constants/services.ts`. */
+export type ServiceText = Omit<Service, 'id' | 'icon' | 'stack'>
+
+/**
+ * Every string shown on the site for one language. `constants/i18n/en.ts` and `es.ts`
+ * implement it, so TypeScript flags any missing translation.
+ */
+export interface Dictionary {
+  meta: { title: string; description: string }
+  common: {
+    skipToContent: string
+    tagline: string
+    responseTime: string
+    switchTheme: (next: 'dark' | 'light') => string
+    /** Label of the language button: the language it switches to. */
+    languageButton: string
+    switchLanguage: string
+  }
+  nav: {
+    links: Record<Exclude<SectionId, 'home'>, string>
+    primaryLabel: string
+    mobileLabel: string
+    bookCall: string
+    openMenu: string
+    closeMenu: string
+    home: string
+  }
+  hero: {
+    eyebrow: string
+    headline: string
+    subheadline: string
+    primaryCta: string
+    secondaryCta: string
+    trustLine: string
+    performance: string
+    conversionRate: string
+  }
+  services: {
+    eyebrow: string
+    title: string
+    description: string
+    tablistLabel: string
+    deliverables: string
+    typicalStack: string
+    discuss: (service: string) => string
+    items: Record<ServiceId, ServiceText>
+  }
+  demo: {
+    eyebrow: string
+    title: string
+    description: string
+    chooseDemo: string
+    themeLab: string
+    performanceLab: string
+    siteTheme: string
+    siteThemeHint: string
+    themes: Record<'dark' | 'light', string>
+    accentToken: string
+    accentHint: string
+    cornerRadius: string
+    radii: { sharp: string; soft: string; round: string }
+    previewLabel: string
+    preview: {
+      getStarted: string
+      badge: string
+      headline: string
+      body: string
+      startTrial: string
+      bookDemo: string
+      channel: (n: number) => string
+    }
+    optimizationsLegend: string
+    toggleOptimizations: string
+    baseline: string
+    optimizations: Record<OptimizationId, { label: string; detail: string }>
+    metrics: { lcp: string; tbt: string; cls: string; weight: string }
+    score: string
+    disclaimer: string
+  }
+  about: {
+    eyebrow: string
+    title: string
+    paragraphs: string[]
+    howWeWork: string
+    team: string
+    clientsSay: string
+    stats: Stat[]
+    principles: Record<PrincipleId, { title: string; description: string }>
+    members: TeamMember[]
+    testimonials: Testimonial[]
+  }
+  contact: {
+    eyebrow: string
+    title: string
+    description: string
+    emailUs: string
+    bookCall: string
+    callUs: string
+    labels: { contact: string; email: string; phone: string; location: string; responseTime: string }
+    helpful: string
+    privacyBefore: string
+    privacyLink: string
+    privacyAfter: string
+    devNote: string
+    mailSubject: (site: string) => string
+    mailBody: string
+  }
+  footer: {
+    navigate: string
+    services: string
+    legal: string
+    rights: (year: number, site: string) => string
+    backToTop: string
+  }
+  legal: {
+    links: Record<LegalDocumentId, string>
+    backToSite: string
+    documentsLabel: string
+    eyebrow: string
+    lastUpdated: string
+    contactIntro: string
+    contactFallbackBefore: string
+    contactFallbackLink: string
+    contactLabels: { company: string; email: string; phone: string; address: string }
+  }
 }

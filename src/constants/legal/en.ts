@@ -1,21 +1,8 @@
-import type { LegalDocument, LegalDocumentId } from '@/types'
-import { SITE } from './site'
+import type { LegalDocument } from '@/types'
+import { SITE } from '../site'
+import { ENTITY, JURISDICTION, WEBSITE, type LegalContent } from './shared'
 
-const env = (value: string | undefined) => value?.trim() ?? ''
-
-/**
- * Legal identity used in the policies. Set `VITE_LEGAL_ENTITY` to the registered business name
- * and `VITE_LEGAL_JURISDICTION` to the governing law (e.g. "the Province of Quebec, Canada").
- */
-const ENTITY = env(import.meta.env.VITE_LEGAL_ENTITY) || SITE.name
-const JURISDICTION =
-  env(import.meta.env.VITE_LEGAL_JURISDICTION) || `the country in which ${ENTITY} is established`
-const WEBSITE = SITE.url.replace(/^https?:\/\//, '')
-
-/** Bump this whenever a policy changes. */
-export const LEGAL_LAST_UPDATED = 'October 2, 2026'
-
-export const PRIVACY_POLICY: LegalDocument = {
+const PRIVACY_POLICY: LegalDocument = {
   id: 'privacy',
   title: 'Privacy Policy',
   description: `How ${ENTITY} collects, uses and protects personal information.`,
@@ -35,7 +22,7 @@ export const PRIVACY_POLICY: LegalDocument = {
       body: [
         'Information you choose to send us. When you email us, call us or book a meeting, we receive the details you provide, such as your name, email address, phone number, company, and the content of your message or meeting notes.',
         'Technical information. Like any website, each visit sends technical data to our hosting provider so the page can be delivered and protected from abuse: IP address, browser and device type, the page requested, the referring page, and the date and time. This data appears in short-lived server logs. We do not use it to identify or profile you.',
-        'Preferences stored on your device. If you switch between the light and dark theme, your choice is saved in your browser\'s local storage under the key "theme". It never leaves your device and is not sent to us. See our Cookie Policy for details.',
+        'Preferences stored on your device. If you switch between the light and dark theme, or between English and Spanish, your choice is saved in your browser\'s local storage under the keys "theme" and "lang". They never leave your device and are not sent to us. See our Cookie Policy for details.',
         'We do not knowingly collect sensitive personal information, and we ask you not to send it to us.',
       ],
     },
@@ -130,7 +117,7 @@ export const PRIVACY_POLICY: LegalDocument = {
   ],
 }
 
-export const TERMS_OF_SERVICE: LegalDocument = {
+const TERMS_OF_SERVICE: LegalDocument = {
   id: 'terms',
   title: 'Terms of Service',
   description: `The terms that apply when you use the ${SITE.name} website.`,
@@ -221,7 +208,7 @@ export const TERMS_OF_SERVICE: LegalDocument = {
   ],
 }
 
-export const COOKIE_POLICY: LegalDocument = {
+const COOKIE_POLICY: LegalDocument = {
   id: 'cookies',
   title: 'Cookie Policy',
   description: `Which cookies and similar technologies the ${SITE.name} website uses.`,
@@ -238,7 +225,7 @@ export const COOKIE_POLICY: LegalDocument = {
     {
       heading: 'What we use',
       body: [
-        'The Website uses a single first-party item in your browser\'s local storage, and only if you change the color theme:',
+        'The Website uses only two first-party items in your browser\'s local storage, and only if you change the color theme or the language:',
         {
           table: {
             head: ['Name', 'Type', 'Purpose', 'Duration'],
@@ -249,10 +236,16 @@ export const COOKIE_POLICY: LegalDocument = {
                 'Remembers whether you chose the light or dark theme, so the page does not switch back on your next visit.',
                 'Until you clear your browser data',
               ],
+              [
+                'lang',
+                'Local storage (first-party, strictly necessary)',
+                'Remembers whether you chose to view the Website in English or Spanish.',
+                'Until you clear your browser data',
+              ],
             ],
           },
         },
-        'This value stays on your device. It is never sent to us or to anyone else, and it cannot be used to identify or track you.',
+        'These values stay on your device. They are never sent to us or to anyone else, and they cannot be used to identify or track you.',
       ],
     },
     {
@@ -277,13 +270,13 @@ export const COOKIE_POLICY: LegalDocument = {
     {
       heading: 'Consent',
       body: [
-        'Because the only item we store is strictly necessary to provide a feature you request (remembering your theme), no consent banner is required under the ePrivacy Directive, the GDPR or similar laws. If we ever add optional cookies such as analytics, we will ask for your consent before setting them and update this policy.',
+        'Because the only items we store are strictly necessary to provide features you request (remembering your theme and language), no consent banner is required under the ePrivacy Directive, the GDPR or similar laws. If we ever add optional cookies such as analytics, we will ask for your consent before setting them and update this policy.',
       ],
     },
     {
-      heading: 'How to manage or delete it',
+      heading: 'How to manage or delete them',
       body: [
-        'You can remove the stored theme at any time by clearing this site\'s data in your browser settings (often under "Privacy", "Cookies and site data" or "Storage"). You can also block websites from storing data, although the Website will then not remember your theme choice. The Website works fully either way.',
+        'You can remove the stored preferences at any time by clearing this site\'s data in your browser settings (often under "Privacy", "Cookies and site data" or "Storage"). You can also block websites from storing data, although the Website will then not remember your theme or language. The Website works fully either way.',
       ],
     },
     {
@@ -296,10 +289,7 @@ export const COOKIE_POLICY: LegalDocument = {
   ],
 }
 
-export const LEGAL_DOCUMENTS: Record<LegalDocumentId, LegalDocument> = {
-  privacy: PRIVACY_POLICY,
-  terms: TERMS_OF_SERVICE,
-  cookies: COOKIE_POLICY,
+export const legalEn: LegalContent = {
+  lastUpdated: 'October 2, 2026',
+  documents: { privacy: PRIVACY_POLICY, terms: TERMS_OF_SERVICE, cookies: COOKIE_POLICY },
 }
-
-export { ENTITY as LEGAL_ENTITY }

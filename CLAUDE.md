@@ -17,11 +17,12 @@ Single-page marketing site for the Atelier Sommet agency. Vite 8 + React 19 + Ty
 
 ## Architecture
 
-- `src/constants/`: all copy and mock data (`services.ts`, `content.ts`, `site.ts`), typed by `src/types/index.ts`. Edit content here, not in JSX.
+- `src/constants/`: all copy and mock data, typed by `src/types/index.ts`. Edit content here, not in JSX.
+- Bilingual (EN/ES): every visible string lives in `src/constants/i18n/en.ts` and `es.ts` (both implement `Dictionary`; add new strings to both). Components read them with `const { t } = useLocale()`. Policy text is in `src/constants/legal/en.ts` and `es.ts`. Language-independent data (ids, icons, stacks) stays in `services.ts`, `content.ts`, `site.ts`.
 - `src/sections/`: one component per page section, composed in `src/App.tsx`.
-- `src/components/`: reusable presentational pieces (Button, Section, Navbar...).
-- `src/hooks/` and `src/lib/`: state and logic (theme context, active-section tracking, class joiner).
+- `src/components/`: reusable presentational pieces (Button, Section, Navbar, ThemeToggle, LanguageToggle...).
+- `src/hooks/` and `src/lib/`: state and logic (theme and locale contexts, active-section tracking, class joiner).
 - `src/index.css` holds every design token. Tailwind v4 is configured in CSS via `@theme` (there is no `tailwind.config.js`). Components use semantic utilities (`bg-bg`, `bg-surface`, `text-fg`, `text-muted`, `border-line`, `text-accent`, `bg-accent-strong`) that switch with `<html data-theme>`.
 - The `@/` import alias maps to `src/`.
 - Frontend only (no backend). Contact details come from `VITE_CONTACT_*` env vars read in `src/constants/site.ts` (see `.env.example`); unset ones are hidden.
-- Multi-page build: `index.html` (landing) plus `privacy.html`, `terms.html`, `cookies.html` (entry `src/legal.tsx`, layout `src/pages/LegalPage.tsx`, text in `src/constants/legal.ts`), listed in `vite.config.ts` → `build.rollupOptions.input`. Nav links are root-relative (`/#services`) so they work from those pages.
+- Multi-page build: `index.html` (landing) plus `privacy.html`, `terms.html`, `cookies.html` (entry `src/legal.tsx`, layout `src/pages/LegalPage.tsx`, text in `src/constants/legal/`), listed in `vite.config.ts` → `build.rollupOptions.input`. Nav links are root-relative (`/#services`) so they work from those pages.

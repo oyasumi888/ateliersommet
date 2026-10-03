@@ -1,19 +1,21 @@
 import { useEffect, useState } from 'react'
 import { Menu, X } from 'lucide-react'
-import { NAV_LINKS } from '@/constants/site'
+import { getNavLinks, NAV_SECTIONS } from '@/constants/site'
 import { useActiveSection } from '@/hooks/useActiveSection'
+import { useLocale } from '@/hooks/useLocale'
 import { cn } from '@/lib/cn'
 import { Button } from './Button'
 import { Container } from './Container'
+import { LanguageToggle } from './LanguageToggle'
 import { Logo } from './Logo'
 import { ThemeToggle } from './ThemeToggle'
-
-const SECTION_IDS = NAV_LINKS.map((l) => l.href.slice(2))
 
 export function Navbar() {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const active = useActiveSection(SECTION_IDS)
+  const active = useActiveSection(NAV_SECTIONS)
+  const { t } = useLocale()
+  const navLinks = getNavLinks(t)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8)
@@ -40,9 +42,9 @@ export function Navbar() {
       <Container className="flex h-16 items-center justify-between gap-4">
         <Logo />
 
-        <nav aria-label="Primary" className="hidden md:block">
+        <nav aria-label={t.nav.primaryLabel} className="hidden md:block">
           <ul className="flex items-center gap-1">
-            {NAV_LINKS.map((link) => {
+            {navLinks.map((link) => {
               const isActive = active === link.href.slice(2)
               return (
                 <li key={link.href}>
@@ -63,10 +65,11 @@ export function Navbar() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <LanguageToggle />
           <ThemeToggle />
           <div className="hidden sm:block">
             <Button href="#contact" size="md">
-              Book a call
+              {t.nav.bookCall}
             </Button>
           </div>
           <button
@@ -74,7 +77,7 @@ export function Navbar() {
             className="grid size-10 place-items-center rounded-full border border-line md:hidden"
             aria-expanded={open}
             aria-controls="mobile-menu"
-            aria-label={open ? 'Close menu' : 'Open menu'}
+            aria-label={open ? t.nav.closeMenu : t.nav.openMenu}
             onClick={() => setOpen((o) => !o)}
           >
             {open ? <X className="size-5" aria-hidden /> : <Menu className="size-5" aria-hidden />}
@@ -83,9 +86,9 @@ export function Navbar() {
       </Container>
 
       {open && (
-        <nav id="mobile-menu" aria-label="Mobile" className="border-t border-line md:hidden">
+        <nav id="mobile-menu" aria-label={t.nav.mobileLabel} className="border-t border-line md:hidden">
           <Container className="flex flex-col py-3">
-            {NAV_LINKS.map((link) => (
+            {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
@@ -96,7 +99,7 @@ export function Navbar() {
               </a>
             ))}
             <Button href="#contact" className="mt-2" onClick={() => setOpen(false)}>
-              Book a call
+              {t.nav.bookCall}
             </Button>
           </Container>
         </nav>

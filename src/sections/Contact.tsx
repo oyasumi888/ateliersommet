@@ -2,19 +2,18 @@ import { CalendarDays, Mail, Phone } from 'lucide-react'
 import { Button } from '@/components/Button'
 import { Section } from '@/components/Section'
 import { SectionHeading } from '@/components/SectionHeading'
-import { CONTACT, CONTACT_DETAILS, LEGAL_LINKS, SITE } from '@/constants/site'
-
-const MAIL_SUBJECT = encodeURIComponent(`Project enquiry: ${SITE.name}`)
-const MAIL_BODY = encodeURIComponent(
-  'Hi,\n\nA few details about our project:\n\n- Company:\n- What we need help with:\n- Timeline:\n- Budget (optional):\n\nThanks!',
-)
+import { CONTACT, getContactDetails, SITE, telHref } from '@/constants/site'
+import { useLocale } from '@/hooks/useLocale'
 
 /**
  * Static contact section: no form and no backend. Visitors reach out through the channels
  * configured in `VITE_CONTACT_*` env vars; unset channels are not rendered.
  */
 export function Contact() {
+  const { t } = useLocale()
+  const c = t.contact
   const hasChannel = Boolean(CONTACT.email || CONTACT.phone || CONTACT.bookingUrl)
+  const mailto = `mailto:${CONTACT.email}?subject=${encodeURIComponent(c.mailSubject(SITE.name))}&body=${encodeURIComponent(c.mailBody)}`
 
   return (
     <Section id="contact" labelledBy="contact-title" className="border-t border-line">
@@ -22,30 +21,25 @@ export function Contact() {
 
       <div className="relative grid gap-12 lg:grid-cols-[1fr_1.3fr] lg:gap-16">
         <div>
-          <SectionHeading
-            id="contact-title"
-            eyebrow="Contact"
-            title="Tell us what you're building."
-            description="Share a few details and a senior engineer, not a salesperson, will reply with next steps and, where it makes sense, a fixed-scope proposal."
-          />
+          <SectionHeading id="contact-title" eyebrow={c.eyebrow} title={c.title} description={c.description} />
           {hasChannel && (
             <div className="mt-8 flex flex-wrap gap-3">
               {CONTACT.email && (
-                <Button href={`mailto:${CONTACT.email}?subject=${MAIL_SUBJECT}&body=${MAIL_BODY}`} size="lg">
+                <Button href={mailto} size="lg">
                   <Mail className="size-4" aria-hidden />
-                  Email us
+                  {c.emailUs}
                 </Button>
               )}
               {CONTACT.bookingUrl && (
                 <Button href={CONTACT.bookingUrl} target="_blank" rel="noopener noreferrer" size="lg" variant="secondary">
                   <CalendarDays className="size-4" aria-hidden />
-                  Book a call
+                  {c.bookCall}
                 </Button>
               )}
               {CONTACT.phone && !CONTACT.bookingUrl && (
-                <Button href={`tel:${CONTACT.phone.replace(/[^+\d]/g, '')}`} size="lg" variant="secondary">
+                <Button href={telHref(CONTACT.phone)} size="lg" variant="secondary">
                   <Phone className="size-4" aria-hidden />
-                  Call us
+                  {c.callUs}
                 </Button>
               )}
             </div>
@@ -54,7 +48,7 @@ export function Contact() {
 
         <div className="rounded-[var(--radius-card)] border border-line bg-surface p-6 shadow-2xl shadow-black/10 sm:p-8">
           <ul className="grid gap-5 sm:grid-cols-2">
-            {CONTACT_DETAILS.map((d) => {
+            {getContactDetails(t).map((d) => {
               const Icon = d.icon
               return (
                 <li key={d.label} className="flex items-center gap-4">
@@ -76,18 +70,14 @@ export function Contact() {
             })}
           </ul>
           <p className="mt-8 border-t border-line pt-6 text-sm leading-relaxed text-muted">
-            Helpful to include: your company, what you need help with (web, SEO &amp; analytics, or bespoke software), your
-            timeline and, if you have one, a budget range. See our{' '}
-            <a href={LEGAL_LINKS[0].href} className="underline underline-offset-2 hover:text-accent">
-              privacy policy
+            {c.helpful} {c.privacyBefore}{' '}
+            <a href="/privacy" className="underline underline-offset-2 hover:text-accent">
+              {c.privacyLink}
             </a>{' '}
-            for how we handle your details.
+            {c.privacyAfter}
           </p>
           {!hasChannel && import.meta.env.DEV && (
-            <p className="mt-4 rounded-xl border border-dashed border-line p-4 font-mono text-xs text-muted">
-              Dev note: no contact channel is configured. Set VITE_CONTACT_EMAIL, VITE_CONTACT_PHONE or
-              VITE_CONTACT_BOOKING_URL in .env.local.
-            </p>
+            <p className="mt-4 rounded-xl border border-dashed border-line p-4 font-mono text-xs text-muted">{c.devNote}</p>
           )}
         </div>
       </div>

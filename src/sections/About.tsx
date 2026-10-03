@@ -1,22 +1,25 @@
 import { Quote } from 'lucide-react'
 import { Section } from '@/components/Section'
 import { SectionHeading } from '@/components/SectionHeading'
-import { ABOUT, PRINCIPLES, STATS, TEAM, TESTIMONIALS } from '@/constants/content'
+import { getPrinciples } from '@/constants/content'
 import { getServiceById } from '@/constants/services'
+import { useLocale } from '@/hooks/useLocale'
 
 export function About() {
+  const { t } = useLocale()
+  const about = t.about
   return (
     <Section id="about" labelledBy="about-title" className="border-t border-line">
       <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
         <div>
-          <SectionHeading id="about-title" eyebrow={ABOUT.eyebrow} title={ABOUT.title} />
+          <SectionHeading id="about-title" eyebrow={about.eyebrow} title={about.title} />
           <div className="mt-6 space-y-4 text-lg leading-relaxed text-muted">
-            {ABOUT.paragraphs.map((p) => (
+            {about.paragraphs.map((p) => (
               <p key={p.slice(0, 24)}>{p}</p>
             ))}
           </div>
           <dl className="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line">
-            {STATS.map((s) => (
+            {about.stats.map((s) => (
               <div key={s.label} className="bg-surface p-5">
                 <dt className="text-xs text-muted">{s.label}</dt>
                 <dd className="mt-1 font-mono text-2xl font-semibold text-accent">{s.value}</dd>
@@ -26,9 +29,9 @@ export function About() {
         </div>
 
         <div>
-          <h3 className="font-mono text-xs tracking-[0.2em] text-muted uppercase">How we work</h3>
+          <h3 className="font-mono text-xs tracking-[0.2em] text-muted uppercase">{about.howWeWork}</h3>
           <ul className="mt-6 grid gap-4 sm:grid-cols-2">
-            {PRINCIPLES.map((p) => {
+            {getPrinciples(t).map((p) => {
               const Icon = p.icon
               return (
                 <li key={p.title} className="rounded-2xl border border-line bg-surface p-6">
@@ -46,9 +49,9 @@ export function About() {
 
       {/* Team */}
       <div className="mt-20">
-        <h3 className="font-mono text-xs tracking-[0.2em] text-muted uppercase">The team</h3>
+        <h3 className="font-mono text-xs tracking-[0.2em] text-muted uppercase">{about.team}</h3>
         <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {TEAM.map((m) => (
+          {about.members.map((m) => (
             <li key={m.role} className="flex gap-4 rounded-2xl border border-line bg-surface p-5">
               {m.avatarUrl ? (
                 <img src={m.avatarUrl} alt="" width={48} height={48} loading="lazy" className="size-12 shrink-0 rounded-full object-cover" />
@@ -69,22 +72,22 @@ export function About() {
 
       {/* Testimonials */}
       <div className="mt-20">
-        <h3 className="font-mono text-xs tracking-[0.2em] text-muted uppercase">What clients say</h3>
+        <h3 className="font-mono text-xs tracking-[0.2em] text-muted uppercase">{about.clientsSay}</h3>
         <ul className="mt-6 grid gap-4 lg:grid-cols-3">
-          {TESTIMONIALS.map((t, i) => (
+          {about.testimonials.map((q, i) => (
             <li key={i}>
               <figure className="flex h-full flex-col rounded-2xl border border-line bg-surface p-6">
                 <Quote className="size-5 text-accent" aria-hidden />
-                <blockquote className="mt-4 flex-1 leading-relaxed">“{t.quote}”</blockquote>
+                <blockquote className="mt-4 flex-1 leading-relaxed">“{q.quote}”</blockquote>
                 <figcaption className="mt-6 border-t border-line pt-4 text-sm">
-                  <span className="font-medium">{t.author}</span>
+                  <span className="font-medium">{q.author}</span>
                   <span className="text-muted">
                     {' '}
-                    · {t.role}, {t.company}
+                    · {q.role}, {q.company}
                   </span>
-                  {t.serviceId && (
+                  {q.serviceId && (
                     <span className="mt-2 block font-mono text-[11px] text-accent">
-                      {getServiceById(t.serviceId)?.shortTitle}
+                      {getServiceById(t, q.serviceId)?.shortTitle}
                     </span>
                   )}
                 </figcaption>

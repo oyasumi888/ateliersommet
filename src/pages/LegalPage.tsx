@@ -1,25 +1,41 @@
 import { ArrowLeft } from 'lucide-react'
 import { Container } from '@/components/Container'
+import { LanguageToggle } from '@/components/LanguageToggle'
+import { LocaleProvider } from '@/components/LocaleProvider'
 import { Logo } from '@/components/Logo'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import { ThemeToggle } from '@/components/ThemeToggle'
-import { LEGAL_DOCUMENTS, LEGAL_ENTITY, LEGAL_LAST_UPDATED } from '@/constants/legal'
-import { CONTACT, LEGAL_LINKS } from '@/constants/site'
+import { LEGAL, LEGAL_ENTITY } from '@/constants/legal'
+import { CONTACT, getLegalLinks, SITE, telHref } from '@/constants/site'
+import { useDocumentMeta, useLocale } from '@/hooks/useLocale'
 import { Footer } from '@/sections/Footer'
 import { cn } from '@/lib/cn'
 import type { LegalBlock, LegalDocumentId } from '@/types'
 
 /** Standalone policy page (privacy / terms / cookies), rendered by `src/legal.tsx`. */
 export function LegalPage({ id }: { id: LegalDocumentId }) {
-  const doc = LEGAL_DOCUMENTS[id]
-
   return (
     <ThemeProvider>
+      <LocaleProvider>
+        <LegalDocumentView id={id} />
+      </LocaleProvider>
+    </ThemeProvider>
+  )
+}
+
+function LegalDocumentView({ id }: { id: LegalDocumentId }) {
+  const { locale, t } = useLocale()
+  const { lastUpdated, documents } = LEGAL[locale]
+  const doc = documents[id]
+  useDocumentMeta(`${doc.title} | ${SITE.name}`, doc.description)
+
+  return (
+    <>
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:rounded-full focus:bg-accent-strong focus:px-4 focus:py-2 focus:text-paper"
       >
-        Skip to content
+        {t.common.skipToContent}
       </a>
       <header className="border-b border-line">
         <Container className="flex h-16 items-center justify-between gap-4">
@@ -27,8 +43,10 @@ export function LegalPage({ id }: { id: LegalDocumentId }) {
           <div className="flex items-center gap-2">
             <a href="/" className="inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm text-muted transition-colors hover:text-fg">
               <ArrowLeft className="size-4" aria-hidden />
-              Back to site
+              <span className="hidden sm:inline">{t.legal.backToSite}</span>
+              <span className="sr-only sm:hidden">{t.legal.backToSite}</span>
             </a>
+            <LanguageToggle />
             <ThemeToggle />
           </div>
         </Container>
@@ -36,9 +54,9 @@ export function LegalPage({ id }: { id: LegalDocumentId }) {
 
       <main id="main" className="py-16 sm:py-20">
         <Container className="max-w-3xl">
-          <nav aria-label="Legal documents">
+          <nav aria-label={t.legal.documentsLabel}>
             <ul className="inline-flex flex-wrap gap-1 rounded-3xl border border-line bg-surface p-1">
-              {LEGAL_LINKS.map((l) => {
+              {getLegalLinks(t).map((l) => {
                 const current = l.href === `/${id}`
                 return (
                   <li key={l.href}>
@@ -59,9 +77,11 @@ export function LegalPage({ id }: { id: LegalDocumentId }) {
           </nav>
 
           <article className="mt-12">
-            <p className="font-mono text-xs font-medium tracking-[0.2em] text-accent uppercase">Legal</p>
+            <p className="font-mono text-xs font-medium tracking-[0.2em] text-accent uppercase">{t.legal.eyebrow}</p>
             <h1 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">{doc.title}</h1>
-            <p className="mt-4 font-mono text-xs text-muted">Last updated: {LEGAL_LAST_UPDATED}</p>
+            <p className="mt-4 font-mono text-xs text-muted">
+              {t.legal.lastUpdated}: {lastUpdated}
+            </p>
             <div className="mt-8 space-y-4 text-lg leading-relaxed text-muted">
               {doc.intro.map((p) => (
                 <p key={p.slice(0, 32)}>{p}</p>
@@ -87,7 +107,7 @@ export function LegalPage({ id }: { id: LegalDocumentId }) {
         </Container>
       </main>
       <Footer />
-    </ThemeProvider>
+    </>
   )
 }
 
@@ -143,16 +163,18 @@ interface ContactRow {
 }
 
 function ContactBlock() {
+  const { t } = useLocale()
+  const l = t.legal.contactLabels
   const rows = [
-    { label: 'Company', value: LEGAL_ENTITY },
-    CONTACT.email && { label: 'Email', value: CONTACT.email, href: `mailto:${CONTACT.email}` },
-    CONTACT.phone && { label: 'Phone', value: CONTACT.phone, href: `tel:${CONTACT.phone.replace(/[^+\d]/g, '')}` },
-    CONTACT.address && { label: 'Address', value: CONTACT.address },
+    { label: l.company, value: LEGAL_ENTITY },
+    CONTACT.email && { label: l.email, value: CONTACT.email, href: `mailto:${CONTACT.email}` },
+    CONTACT.phone && { label: l.phone, value: CONTACT.phone, href: telHref(CONTACT.phone) },
+    CONTACT.address && { label: l.address, value: CONTACT.address },
   ].filter((r): r is ContactRow => Boolean(r))
 
   return (
     <>
-      <p>For questions about this policy or to exercise your rights, contact us:</p>
+      <p>{t.legal.contactIntro}</p>
       <dl className="grid gap-x-6 gap-y-2 rounded-2xl border border-line bg-surface p-5 sm:grid-cols-[auto_1fr]">
         {rows.map((r) => (
           <div key={r.label} className="contents">
@@ -171,9 +193,9 @@ function ContactBlock() {
       </dl>
       {!CONTACT.email && !CONTACT.phone && (
         <p>
-          You can also reach us through the channels listed in our{' '}
+          {t.legal.contactFallbackBefore}{' '}
           <a href="/#contact" className="underline underline-offset-2 hover:text-accent">
-            contact section
+            {t.legal.contactFallbackLink}
           </a>
           .
         </p>

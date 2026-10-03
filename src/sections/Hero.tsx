@@ -2,9 +2,11 @@ import { useRef, useState, type PointerEvent, type ReactNode } from 'react'
 import { ArrowRight, Check, MousePointerClick, TrendingUp, Zap } from 'lucide-react'
 import { Button } from '@/components/Button'
 import { Container } from '@/components/Container'
-import { HERO } from '@/constants/content'
+import { useLocale } from '@/hooks/useLocale'
 
 export function Hero() {
+  const { t } = useLocale()
+  const hero = t.hero
   return (
     <section id="home" aria-labelledby="hero-title" className="relative overflow-hidden pt-32 pb-20 sm:pt-40 sm:pb-28">
       {/* Backdrop: faded grid + olive glow */}
@@ -15,33 +17,33 @@ export function Hero() {
         <div className="animate-fade-up">
           <p className="inline-flex items-center gap-2 rounded-full border border-line bg-surface/60 px-3 py-1 font-mono text-xs text-muted">
             <span className="size-1.5 animate-pulse-soft rounded-full bg-accent" aria-hidden />
-            {HERO.eyebrow}
+            {hero.eyebrow}
           </p>
           <h1 id="hero-title" className="mt-6 text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-            {HERO.headline.split('. ').map((part, i, arr) => (
+            {hero.headline.split('. ').map((part, i, arr) => (
               <span key={part} className={i === arr.length - 1 ? 'text-accent' : undefined}>
                 {part}
                 {i < arr.length - 1 ? '. ' : ''}
               </span>
             ))}
           </h1>
-          <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">{HERO.subheadline}</p>
+          <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">{hero.subheadline}</p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Button href={HERO.primaryCta.href} size="lg">
-              {HERO.primaryCta.label}
+            <Button href="#contact" size="lg">
+              {hero.primaryCta}
               <ArrowRight className="size-4" aria-hidden />
             </Button>
-            <Button href={HERO.secondaryCta.href} size="lg" variant="secondary">
-              {HERO.secondaryCta.label}
+            <Button href="#services" size="lg" variant="secondary">
+              {hero.secondaryCta}
             </Button>
           </div>
           <p className="mt-8 flex items-center gap-2 text-sm text-muted">
             <Check className="size-4 text-accent" aria-hidden />
-            {HERO.trustLine}
+            {hero.trustLine}
           </p>
         </div>
 
-        <HeroPreview />
+        <HeroPreview performance={hero.performance} conversionRate={hero.conversionRate} />
       </Container>
     </section>
   )
@@ -51,7 +53,7 @@ export function Hero() {
  * Interactive preview: a browser mock-up that tilts toward the pointer, with floating
  * metric cards. Purely decorative (aria-hidden) — replace with a real case study later.
  */
-function HeroPreview() {
+function HeroPreview({ performance, conversionRate }: { performance: string; conversionRate: string }) {
   const ref = useRef<HTMLDivElement>(null)
   const [tilt, setTilt] = useState({ x: 0, y: 0 })
 
@@ -121,14 +123,14 @@ function HeroPreview() {
       <MetricCard
         className="-bottom-6 -left-4 sm:-left-8"
         icon={<Zap className="size-4" />}
-        label="Performance"
+        label={performance}
         value="98"
         suffix="/100"
       />
       <MetricCard
         className="-top-6 -right-2 [animation-delay:1.5s] sm:-right-6"
         icon={<TrendingUp className="size-4" />}
-        label="Conversion rate"
+        label={conversionRate}
         value="+38"
         suffix="%"
       />
