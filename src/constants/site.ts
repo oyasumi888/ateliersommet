@@ -1,21 +1,21 @@
 import { Clock, Mail, MapPin, Phone, UserRound } from 'lucide-react'
 import type { ContactDetail, ContactInfo, LegalLink, NavLink, SiteConfig } from '@/types'
 
+const env = (value: string | undefined) => value?.trim() ?? ''
+
 /**
  * Global site configuration. Every piece of company info rendered on the page comes from
  * here, so updating it before launch is a one-file change.
- * TODO(launch): replace the production URL.
+ * The production URL comes from `VITE_SITE_URL` (see `.env.example`).
  */
 export const SITE: SiteConfig = {
   name: 'Atelier Sommet',
   tagline: 'Engineering-grade marketing & software',
   description:
     'A software development and technical marketing agency building high-converting websites, measurable growth and bespoke business software.',
-  url: 'https://example.com',
+  url: env(import.meta.env.VITE_SITE_URL).replace(/\/+$/, '') || 'https://example.com',
   responseTime: 'Within 1 business day',
 }
-
-const env = (value: string | undefined) => value?.trim() ?? ''
 
 /**
  * Contact details come from `VITE_CONTACT_*` environment variables (see `.env.example`),

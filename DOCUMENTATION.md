@@ -203,6 +203,27 @@ npm run typecheck   # TypeScript only
 Environment variables: copy `.env.example` to `.env.local` and fill in values. Only variables
 prefixed with `VITE_` are exposed to the client.
 
+### Deploying to Vercel
+
+The repo is ready for Vercel: `vercel.json` pins the framework (Vite), install/build commands,
+output directory (`dist`), clean URLs (`/privacy` serves `privacy.html`), long-term caching for
+hashed `/assets/*` files, and security headers. `package.json` declares the Node version
+(`engines`).
+
+1. In Vercel, **Add New → Project** and import the GitHub repository. The settings are read from
+   `vercel.json`, so leave the build options as detected.
+2. Under **Settings → Environment Variables**, add the variables from `.env.example`
+   (`VITE_SITE_URL`, `VITE_CONTACT_NAME`, `VITE_CONTACT_EMAIL`, `VITE_CONTACT_PHONE`,
+   `VITE_CONTACT_ADDRESS`, `VITE_CONTACT_BOOKING_URL`). Enable them for **Production** and,
+   if you want, **Preview**.
+3. Set the **Production Branch** to `main` (Settings → Git). Pushes to `main` deploy to
+   production; pushes to other branches (e.g. `dev`) get preview URLs.
+4. Deploy. After changing any env var, **redeploy**: `VITE_*` values are baked in at build time.
+5. Attach your domain under **Settings → Domains**, then set `VITE_SITE_URL` to it and redeploy.
+
+CLI alternative: `npm i -g vercel`, then `vercel link`, `vercel env pull .env.local`
+(downloads the variables for local dev) and `vercel --prod`.
+
 ### Adding a new service
 
 1. Add the id to the union in `src/types/index.ts`:
@@ -258,10 +279,10 @@ prefixed with `VITE_` are exposed to the client.
 ## 5. Pre-launch checklist
 
 ### Domain & hosting
-- [ ] Choose a host (Vercel, Netlify, Cloudflare Pages). Build command `npm run build`, output dir `dist`.
+- [ ] Import the repo in Vercel and add the env vars (see "Deploying to Vercel").
 - [ ] Attach the custom domain, configure DNS (apex `A`/`ALIAS` + `www` `CNAME`), and pick a canonical (apex vs `www`) with a 301 redirect for the other.
 - [ ] Confirm HTTPS/TLS is issued and HSTS is enabled.
-- [ ] Set `SITE.url` in `src/constants/site.ts` to the production URL.
+- [ ] Set `VITE_SITE_URL` to the production URL and redeploy.
 
 ### Contact details
 - [ ] Set the `VITE_CONTACT_*` variables in the host's environment variables and redeploy.
