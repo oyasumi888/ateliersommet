@@ -53,8 +53,6 @@
   --radius-card: 0.75rem;
 
   --animate-fade-up: fade-up 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
-  --animate-float: float 6s ease-in-out infinite;
-  --animate-pulse-soft: pulse-soft 2.4s ease-in-out infinite;
 
   @keyframes fade-up {
     from {
@@ -64,24 +62,6 @@
     to {
       opacity: 1;
       transform: none;
-    }
-  }
-  @keyframes float {
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-8px);
-    }
-  }
-  @keyframes pulse-soft {
-    0%,
-    100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.45;
     }
   }
 }

@@ -112,7 +112,7 @@ inside `@theme { … }` in `src/index.css` generates utilities automatically
 | **`olive-600`**      | `#556B2F` | **Primary brand olive**: solid buttons, active states |
 | `olive-400`          | `#95AA5A` | Accent text/icons on dark backgrounds (contrast)     |
 | `olive-700`          | `#445626` | Primary button hover                                 |
-| `ink-50` … `ink-950` | —         | Neutral black/grey scale                             |
+| `ink-50` … `ink-950` | —         | Olive-tinted blacks and off-whites (no neutral greys) |
 | **`ink-950`**        | `#0F0F0F` | **Dark base UI** background                          |
 | **`paper`**          | `#FAFAFA` | **Light neutral**: light-theme background, text on dark |
 
@@ -127,7 +127,7 @@ Components should almost always use semantic utilities, so they theme automatica
 | `bg-surface-2`             | ink-800              | ink-50        | nested surfaces, tracks         |
 | `text-fg`                  | paper                | ink-950       | primary text                    |
 | `text-muted`               | ink-300              | ink-500       | secondary text                  |
-| `border-line`              | paper @ 10%          | ink-950 @ 10% | borders, dividers               |
+| `border-line`              | olive-200 @ 13%      | olive-900 @ 16% | borders, dividers             |
 | `text-accent` / `bg-accent`| olive-400            | olive-600     | accent text, icons, highlights  |
 | `bg-accent-strong`         | olive-600            | olive-600     | solid CTA backgrounds           |
 | `bg-accent-soft`           | olive-500 @ 18%      | olive-500 @ 14% | selected/tinted backgrounds   |
@@ -146,10 +146,12 @@ The values are declared under `:root, [data-theme='dark']` and `[data-theme='lig
 ### Other tokens
 
 - `--font-sans` (Inter Variable), `--font-mono` (JetBrains Mono Variable)
-- `--radius-card` (1.25rem): large card radius, used as `rounded-[var(--radius-card)]`
-- Animations: `animate-fade-up`, `animate-float`, `animate-pulse-soft`
-  (all disabled under `prefers-reduced-motion`)
-- `.bg-grid`: subtle grid backdrop utility
+- `--radius-card` (0.75rem): card radius, used as `rounded-[var(--radius-card)]`
+- Animation: `animate-fade-up` (disabled under `prefers-reduced-motion`)
+- `--mtn-*`: colours of the hero mountain illustration (`MountainBackdrop.tsx`), per theme
+
+The palette is intentionally olive, black and white only: avoid adding neutral greys, and
+do not reintroduce glow blobs or grid backdrops.
 
 To **change the brand color**, edit the `--color-olive-*` values in `index.css`. Everything
 (buttons, accents, focus rings, selection color, demo) follows automatically.
@@ -162,10 +164,10 @@ To **change the brand color**, edit the `--color-olive-*` values in `index.css`.
 
 | Section              | Anchor      | What it does                                                                                                                                                                 |
 | -------------------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Hero**             | `#home`     | Headline (last sentence highlighted in olive), sub-headline, primary + secondary CTA, trust line. An interactive browser mock-up tilts toward the pointer, with floating metric cards. |
+| **Hero**             | `#home`     | Eyebrow, headline, sub-headline, primary + secondary CTA, trust points, and the Pico de Orizaba illustration (`MountainBackdrop`) underneath. |
 | **Services**         | `#services` | Accessible vertical **tabs** (WAI-ARIA pattern: arrow keys, Home/End) for the 3 services. Each panel shows summary, headline metric, features, deliverables, typical stack, and a CTA. |
 | **CapabilityDemo**   | `#demo`     | "Proof of work" with two labs: **Theme lab** (live site theme switch, accent token swatches, corner radius, generated CSS snippet, live mini-site preview) and **Performance lab** (toggle optimizations to see LCP / TBT / CLS / page weight and an animated score ring react). |
-| **About**            | `#about`    | Philosophy copy, stats grid, 4 working principles, team cards (initials fallback for avatars), testimonials linked to services.                                              |
+| **About**            | `#about`    | Philosophy copy, stats grid, 4 working principles, team cards and testimonials (each block is hidden while its list in the dictionaries is empty). |
 | **Contact**          | `#contact`  | Static contact card (name, email, phone, location, response time) plus "Email us" (pre-filled `mailto:`), "Book a call" or "Call us" buttons. Values come from env vars; unset ones are hidden. |
 | **Footer**           | —           | Logo/tagline, navigation, services, links to the legal pages, copyright, back-to-top.                                                                                       |
 
@@ -338,8 +340,8 @@ CLI alternative: `npm i -g vercel`, then `vercel link`, `vercel env pull .env.lo
 - [ ] Check the "Email us" link opens a pre-filled email and the phone link dials correctly on mobile.
 
 ### Content
-- [ ] Replace placeholder team members, add photos.
-- [ ] Replace placeholder testimonials with real, approved quotes (or remove them until available).
+- [ ] Add real team members (with photos) to `about.members`; the block is hidden while empty.
+- [ ] Add real, approved client quotes to `about.testimonials`; the block is hidden while empty.
 - [ ] Verify every number in `STATS` and service `metric`s is true and defensible.
 - [ ] Final logo: replace the SVG in `Logo.tsx` and `public/favicon.svg`. Add `apple-touch-icon` and a web manifest.
 
@@ -350,7 +352,8 @@ CLI alternative: `npm i -g vercel`, then `vercel link`, `vercel env pull .env.lo
 
 ### SEO & analytics
 - [ ] Add `<link rel="canonical">`, `og:url`, `og:image` (1200×630) and Twitter card tags in `index.html`.
-- [ ] Add `robots.txt` and `sitemap.xml` to `public/`.
+- [x] `public/robots.txt` allows all crawlers.
+- [ ] Add `sitemap.xml` to `public/` (and a `Sitemap:` line in `robots.txt`) once the domain is final.
 - [ ] Add `Organization` / `ProfessionalService` JSON-LD structured data.
 - [ ] Set up GA4 (or Plausible/Fathom) and track clicks on the email / booking links as leads.
 - [ ] Verify the domain in Google Search Console and Bing Webmaster Tools, then submit the sitemap.
