@@ -6,7 +6,8 @@
  * Tailwind v4 is configured in CSS: every `--color-*`, `--font-*`, etc. declared in
  * `@theme` becomes a utility (e.g. `--color-olive-600` → `bg-olive-600`, `text-olive-600`).
  *
- * 1. Raw palette  — olive scale, ink (black) scale, paper (white).
+ * 1. Raw palette  — olive scale, ink (olive-tinted black) scale, paper (white). No pure greys:
+ *                   every neutral leans toward the brand olive.
  * 2. Semantic     — bg / surface / fg / muted / line / accent. These point at CSS variables
  *                   that flip between the dark (default) and light theme, so components only
  *                   ever use semantic utilities (`bg-bg`, `text-fg`, `border-line`...).
@@ -32,17 +33,18 @@
   --color-olive-900: #2c371b;
   --color-olive-950: #161d0c;
 
-  /* Ink — deep black base UI. 950 is the canonical base (#0F0F0F). */
-  --color-ink-50: #f4f4f3;
-  --color-ink-100: #e4e4e2;
-  --color-ink-200: #c9c9c6;
-  --color-ink-300: #a3a39f;
-  --color-ink-400: #7a7a76;
-  --color-ink-500: #5c5c59;
-  --color-ink-600: #454543;
-  --color-ink-700: #2f2f2e;
-  --color-ink-800: #1f1f1e;
-  --color-ink-900: #171717;
+
+  /* Ink — olive-tinted blacks and off-whites (no neutral grey). 950 is the base (#0F0F0F). */
+  --color-ink-50: #f3f4ec;
+  --color-ink-100: #e3e6d6;
+  --color-ink-200: #c6cbb0;
+  --color-ink-300: #a7ae8a;
+  --color-ink-400: #868e68;
+  --color-ink-500: #636b49;
+  --color-ink-600: #4a5136;
+  --color-ink-700: #323824;
+  --color-ink-800: #20241a;
+  --color-ink-900: #171a12;
   --color-ink-950: #0f0f0f;
 
   /* Paper — clean off-white neutral (#FAFAFA). */
@@ -106,12 +108,18 @@
   --surface-2: var(--color-ink-800);
   --fg: var(--color-paper);
   --muted: var(--color-ink-300);
-  --line: color-mix(in oklab, var(--color-paper) 10%, transparent);
+  --line: color-mix(in oklab, var(--color-olive-200) 13%, transparent);
   /* Brighter olive for text/icons on black; solid buttons stay brand olive-600. */
   --accent: var(--color-olive-400);
   --accent-strong: var(--color-olive-600);
   --accent-fg: var(--color-paper);
   --accent-soft: color-mix(in oklab, var(--color-olive-500) 18%, transparent);
+  /* Hero mountain (Pico de Orizaba). */
+  --mtn-far: var(--color-ink-800);
+  --mtn-top: var(--color-olive-800);
+  --mtn-base: var(--color-ink-900);
+  --mtn-snow: var(--color-ink-100);
+  --mtn-front: var(--color-ink-950);
 }
 
 [data-theme='light'] {
@@ -121,11 +129,16 @@
   --surface-2: var(--color-ink-50);
   --fg: var(--color-ink-950);
   --muted: var(--color-ink-500);
-  --line: color-mix(in oklab, var(--color-ink-950) 10%, transparent);
+  --line: color-mix(in oklab, var(--color-olive-900) 16%, transparent);
   --accent: var(--color-olive-600);
   --accent-strong: var(--color-olive-600);
   --accent-fg: var(--color-paper);
   --accent-soft: color-mix(in oklab, var(--color-olive-500) 14%, transparent);
+  --mtn-far: var(--color-ink-100);
+  --mtn-top: var(--color-olive-300);
+  --mtn-base: var(--color-ink-100);
+  --mtn-snow: #ffffff;
+  --mtn-front: var(--color-paper);
 }
 
 @layer base {
