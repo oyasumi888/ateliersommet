@@ -7,13 +7,7 @@
     <meta name="description" content="Which cookies and similar technologies the Atelier Sommet website uses." />
     <meta name="theme-color" content="#0F0F0F" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <script>
-      // Apply the saved theme before first paint to avoid a flash of the wrong theme.
-      try {
-        const t = localStorage.getItem('theme')
-        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t
-      } catch {}
-    </script>
+    <script src="/theme-init.js"></script>
   </head>
   <body>
     <div id="root" data-page="cookies"></div>
