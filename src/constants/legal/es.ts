@@ -62,7 +62,7 @@ const PRIVACY_POLICY: LegalDocument = {
         'Solo compartimos datos personales con proveedores que nos ayudan a operar, bajo contratos que les obligan a protegerlos:',
         {
           list: [
-            'Vercel Inc., que aloja el Sitio y lo distribuye a través de su red global.',
+            'Cloudflare, Inc., que aloja el Sitio, lo distribuye a través de su red global y lo protege contra ataques.',
             'Nuestros proveedores de correo, calendario y agenda, que almacenan los mensajes y citas que nos envía.',
             'Asesores profesionales, como contadores y abogados, cuando sea necesario.',
           ],
@@ -216,7 +216,7 @@ const COOKIE_POLICY: LegalDocument = {
   title: 'Política de cookies',
   description: `Qué cookies y tecnologías similares usa el sitio web de ${SITE.name}.`,
   intro: [
-    `Esta Política de cookies explica cómo ${WEBSITE} (el "Sitio"), operado por ${ENTITY}, usa cookies y tecnologías similares. En resumen: el Sitio no instala ninguna cookie y no utiliza tecnologías de analítica, publicidad ni rastreo.`,
+    `Esta Política de cookies explica cómo ${WEBSITE} (el "Sitio"), operado por ${ENTITY}, usa cookies y tecnologías similares. En resumen: nosotros no instalamos ninguna cookie y el Sitio no utiliza tecnologías de analítica, publicidad ni rastreo. Nuestro proveedor de hosting puede instalar una cookie de seguridad estrictamente necesaria (ver más abajo).`,
   ],
   sections: [
     {
@@ -261,7 +261,7 @@ const COOKIE_POLICY: LegalDocument = {
             'Ningún contenido incrustado de terceros que instale cookies (como reproductores de video o widgets de chat).',
           ],
         },
-        'Nuestro proveedor de hosting, Vercel, trata datos técnicos de las solicitudes para mostrar el Sitio de forma segura (consulte nuestro Aviso de privacidad). No hemos activado ninguna función de analítica del hosting que instale cookies.',
+        'Nuestro proveedor de hosting, Cloudflare, trata datos técnicos de las solicitudes para mostrar el Sitio de forma segura (consulte nuestro Aviso de privacidad). No hemos activado ninguna función de analítica que instale cookies. Si la protección contra bots de Cloudflare está activa, puede instalar una cookie de seguridad estrictamente necesaria (como "__cf_bm"), que solo sirve para distinguir a las personas del tráfico automatizado y caduca en unos 30 minutos.',
       ],
     },
     {
@@ -293,6 +293,6 @@ const COOKIE_POLICY: LegalDocument = {
 }
 
 export const legalEs: LegalContent = {
-  lastUpdated: '4 de octubre de 2026',
+  lastUpdated: '5 de octubre de 2026',
   documents: { privacy: PRIVACY_POLICY, terms: TERMS_OF_SERVICE, cookies: COOKIE_POLICY },
 }

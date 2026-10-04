@@ -60,7 +60,7 @@ const PRIVACY_POLICY: LegalDocument = {
         'We share personal information only with service providers that help us operate, under contracts that require them to protect it:',
         {
           list: [
-            'Vercel Inc., which hosts the Website and delivers it through its global network.',
+            'Cloudflare, Inc., which hosts the Website, delivers it through its global network and protects it against attacks.',
             'Our email, calendar and scheduling providers, which store the messages and bookings you send us.',
             'Professional advisers such as accountants and lawyers, where needed.',
           ],
@@ -214,7 +214,7 @@ const COOKIE_POLICY: LegalDocument = {
   title: 'Cookie Policy',
   description: `Which cookies and similar technologies the ${SITE.name} website uses.`,
   intro: [
-    `This Cookie Policy explains how ${WEBSITE} (the "Website"), operated by ${ENTITY}, uses cookies and similar technologies. In short: the Website does not set any cookies, and it does not use analytics, advertising or tracking technologies.`,
+    `This Cookie Policy explains how ${WEBSITE} (the "Website"), operated by ${ENTITY}, uses cookies and similar technologies. In short: we do not set any cookies ourselves, and the Website does not use analytics, advertising or tracking technologies. Our hosting provider may set one strictly necessary security cookie (see below).`,
   ],
   sections: [
     {
@@ -259,7 +259,7 @@ const COOKIE_POLICY: LegalDocument = {
             'No third-party embeds that set cookies (such as video players or chat widgets).',
           ],
         },
-        'Our hosting provider, Vercel, processes technical request data to deliver the Website securely (see our Privacy Policy). We have not enabled any hosting analytics features that set cookies.',
+        'Our hosting provider, Cloudflare, processes technical request data to deliver the Website securely (see our Privacy Policy). We have not enabled any analytics features that set cookies. If Cloudflare\'s bot protection is active, it may set a strictly necessary security cookie (such as "__cf_bm") that is used only to tell people from automated traffic and expires within about 30 minutes.',
       ],
     },
     {
@@ -291,6 +291,6 @@ const COOKIE_POLICY: LegalDocument = {
 }
 
 export const legalEn: LegalContent = {
-  lastUpdated: 'October 4, 2026',
+  lastUpdated: 'October 5, 2026',
   documents: { privacy: PRIVACY_POLICY, terms: TERMS_OF_SERVICE, cookies: COOKIE_POLICY },
 }
