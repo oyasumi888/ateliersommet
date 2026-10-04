@@ -4,15 +4,15 @@ dist
 dist-ssr
 *.tsbuildinfo
 
-# Environment: real values live in .env.local or the Vercel dashboard.
+# Environment: real values live in .env.local or the Cloudflare dashboard.
 # .env.example is the committed, empty template.
 .env
 .env.*
 !.env.example
 *.local
 
-# Vercel CLI
-.vercel
+# Wrangler (Cloudflare CLI)
+.wrangler
 
 # Editors and OS
 .DS_Store

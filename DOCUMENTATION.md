@@ -184,7 +184,7 @@ HTML file picks the document through `data-page` on `#root`.
   fill in the policies. Contact details reuse `VITE_CONTACT_*`.
 - Bump `LEGAL_LAST_UPDATED` whenever a policy changes.
 - The policies describe what the site does today: no forms, no analytics, no cookies, only the
-  `theme` and `lang` keys in localStorage, hosted on Vercel. If you add analytics, embeds or a form, update
+  `theme` and `lang` keys in localStorage, hosted on Cloudflare. If you add analytics, embeds or a form, update
   them (and add a consent banner for any non-essential cookies).
 - To add a page: add the id to `LegalDocumentId`, a document to both `legal/en.ts` and `legal/es.ts`, its id to
   `LEGAL_PAGES` in `site.ts` and `legal.links` in the dictionaries, an HTML file copied from `privacy.html` with the new `data-page`, and its name to
@@ -250,27 +250,29 @@ npm run typecheck   # TypeScript only
 Environment variables: copy `.env.example` to `.env.local` and fill in values. Only variables
 prefixed with `VITE_` are exposed to the client.
 
-### Deploying to Vercel
+### Deploying to Cloudflare
 
-The repo is ready for Vercel: `vercel.json` pins the framework (Vite), install/build commands,
-output directory (`dist`), clean URLs (`/privacy` serves `privacy.html`), long-term caching for
-hashed `/assets/*` files, and security headers. `package.json` declares the Node version
-(`engines`).
+The site is deployed as a Cloudflare Worker that only serves static assets (Workers Builds,
+connected to the GitHub repo).
 
-1. In Vercel, **Add New → Project** and import the GitHub repository. The settings are read from
-   `vercel.json`, so leave the build options as detected.
-2. Under **Settings → Environment Variables**, add the variables from `.env.example`
-   (`VITE_SITE_URL`, `VITE_CONTACT_NAME`, `VITE_CONTACT_EMAIL`, `VITE_CONTACT_PHONE`,
-   `VITE_CONTACT_ADDRESS`, `VITE_CONTACT_BOOKING_URL`, `VITE_LEGAL_ENTITY`,
-   `VITE_LEGAL_JURISDICTION`). Enable them for **Production** and,
-   if you want, **Preview**.
-3. Set the **Production Branch** to `main` (Settings → Git). Pushes to `main` deploy to
-   production; pushes to other branches (e.g. `dev`) get preview URLs.
-4. Deploy. After changing any env var, **redeploy**: `VITE_*` values are baked in at build time.
-5. Attach your domain under **Settings → Domains**, then set `VITE_SITE_URL` to it and redeploy.
+- `wrangler.jsonc` names the Worker (`ateliersommet`) and serves `dist/`. `html_handling:
+  auto-trailing-slash` gives clean URLs (`/privacy` serves `privacy.html`).
+- `public/_headers` (copied into `dist/`) sets long-term caching for hashed `/assets/*` files and
+  the security headers.
+- `package.json` declares the Node version (`engines`).
 
-CLI alternative: `npm i -g vercel`, then `vercel link`, `vercel env pull .env.local`
-(downloads the variables for local dev) and `vercel --prod`.
+1. In the Cloudflare dashboard, **Workers & Pages → Create → Import a repository** and pick the
+   GitHub repo. Build command `npm run build`, deploy command `npx wrangler deploy`.
+2. Under the Worker's **Settings → Build → Variables and secrets**, add the variables from
+   `.env.example` (`VITE_SITE_URL`, `VITE_CONTACT_*`, `VITE_LEGAL_ENTITY`,
+   `VITE_LEGAL_JURISDICTION`). They must be **build** variables: `VITE_*` values are baked in at
+   build time, so runtime variables have no effect.
+3. Under **Settings → Build → Branch control**, keep `main` as the production branch. Other
+   branches (e.g. `dev`) can get preview builds.
+4. After changing any variable, trigger a new build (push, or **Deployments → Retry build**).
+5. Attach your domain under **Settings → Domains & Routes**, then set `VITE_SITE_URL` and rebuild.
+
+CLI alternative: `npm run build && npx wrangler deploy` (log in first with `npx wrangler login`).
 
 ### Adding a new service
 
@@ -330,7 +332,7 @@ CLI alternative: `npm i -g vercel`, then `vercel link`, `vercel env pull .env.lo
 ## 5. Pre-launch checklist
 
 ### Domain & hosting
-- [ ] Import the repo in Vercel and add the env vars (see "Deploying to Vercel").
+- [ ] Import the repo in Cloudflare Workers and add the build variables (see "Deploying to Cloudflare").
 - [ ] Attach the custom domain, configure DNS (apex `A`/`ALIAS` + `www` `CNAME`), and pick a canonical (apex vs `www`) with a 301 redirect for the other.
 - [ ] Confirm HTTPS/TLS is issued and HSTS is enabled.
 - [ ] Set `VITE_SITE_URL` to the production URL and redeploy.

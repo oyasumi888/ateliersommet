@@ -1,0 +1,13 @@
+// Cloudflare Workers deployment: serves the static Vite build in dist/ (no Worker script).
+// Workers Builds runs `npm run build`, then `npx wrangler deploy`.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ateliersommet",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": "./dist",
+    // `/privacy` serves privacy.html; unknown paths return a plain 404.
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "none"
+  }
+}
