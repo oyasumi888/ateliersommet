@@ -7,8 +7,11 @@ import { LegalPage } from './pages/LegalPage'
 import type { LegalDocumentId } from './types'
 
 /** Entry for the standalone legal pages; each HTML file sets `data-page` on #root. */
+const PAGES: readonly LegalDocumentId[] = ['privacy', 'terms', 'cookies']
+
 const root = document.getElementById('root')!
-const page = root.dataset.page as LegalDocumentId
+const requested = root.dataset.page
+const page = PAGES.find((p) => p === requested) ?? 'privacy'
 
 createRoot(root).render(
   <StrictMode>

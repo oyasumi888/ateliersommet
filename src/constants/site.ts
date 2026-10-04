@@ -1,7 +1,9 @@
 import { Clock, Mail, MapPin, Phone, UserRound } from 'lucide-react'
+import { parseSiteEnv } from '@/lib/env'
 import type { ContactDetail, ContactInfo, Dictionary, LegalDocumentId, LegalLink, NavLink, SiteConfig } from '@/types'
 
-const env = (value: string | undefined) => value?.trim() ?? ''
+/** Cleaned and validated `VITE_*` values; invalid ones are '' (and fail the production build). */
+export const ENV = parseSiteEnv(import.meta.env).env
 
 /**
  * Language-independent site settings. Translated copy (tagline, response time, labels)
@@ -10,7 +12,7 @@ const env = (value: string | undefined) => value?.trim() ?? ''
  */
 export const SITE: SiteConfig = {
   name: 'Atelier Sommet',
-  url: env(import.meta.env.VITE_SITE_URL).replace(/\/+$/, '') || 'https://example.com',
+  url: ENV.siteUrl || 'https://example.com',
 }
 
 /**
@@ -18,11 +20,11 @@ export const SITE: SiteConfig = {
  * so they live in `.env.local` / the hosting dashboard instead of the repository.
  */
 export const CONTACT: ContactInfo = {
-  name: env(import.meta.env.VITE_CONTACT_NAME),
-  email: env(import.meta.env.VITE_CONTACT_EMAIL),
-  phone: env(import.meta.env.VITE_CONTACT_PHONE),
-  address: env(import.meta.env.VITE_CONTACT_ADDRESS),
-  bookingUrl: env(import.meta.env.VITE_CONTACT_BOOKING_URL),
+  name: ENV.contactName,
+  email: ENV.contactEmail,
+  phone: ENV.contactPhone,
+  address: ENV.contactAddress,
+  bookingUrl: ENV.bookingUrl,
 }
 
 export const telHref = (phone: string) => `tel:${phone.replace(/[^+\d]/g, '')}`
