@@ -1,0 +1,120 @@
+<!doctype html>
+<!--
+  Source of public/og-image.png, the 1200x630 card shown when the site is shared.
+  Regenerate after editing (Windows, from the repo root):
+    "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" --headless=new --hide-scrollbars
+      --window-size=1200,630 --screenshot=public/og-image.png "file:///%CD%/scripts/og-image.html"
+  Any Chromium browser works the same way. Mountain paths mirror src/components/MountainBackdrop.tsx.
+-->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Atelier Sommet share card</title>
+    <style>
+      @font-face {
+        font-family: 'Inter';
+        src: url('../node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2') format('woff2');
+        font-weight: 100 900;
+      }
+      * {
+        margin: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1200px;
+        height: 630px;
+        overflow: hidden;
+        background: #0f0f0f;
+        font-family: 'Inter', system-ui, sans-serif;
+        color: #fafafa;
+      }
+      .card {
+        position: relative;
+        width: 1200px;
+        height: 630px;
+        padding: 64px 72px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        font-size: 26px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+      }
+      .brand svg {
+        width: 44px;
+        height: 44px;
+      }
+      .eyebrow {
+        margin-top: 64px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        font-size: 22px;
+        font-weight: 500;
+        color: #95aa5a;
+      }
+      .eyebrow::before {
+        content: '';
+        width: 40px;
+        height: 2px;
+        background: #95aa5a;
+      }
+      h1 {
+        margin-top: 22px;
+        font-size: 64px;
+        line-height: 1.04;
+        font-weight: 600;
+        letter-spacing: -0.035em;
+      }
+      .mountain {
+        position: absolute;
+        right: -330px;
+        bottom: 0;
+        width: 1300px;
+        height: 542px;
+        -webkit-mask-image: linear-gradient(to right, transparent, #000 32%);
+        mask-image: linear-gradient(to right, transparent, #000 32%);
+      }
+      .rule {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 6px;
+        background: #556b2f;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <svg class="mountain" viewBox="0 0 1440 600" aria-hidden="true">
+        <defs>
+          <linearGradient id="cone" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#374520" />
+            <stop offset="0.75" stop-color="#171a12" />
+          </linearGradient>
+        </defs>
+        <path fill="#20241a" d="M0 600V430l110-46 90 30 120-62 110 48 90-34 70 20 140 40 200 4 110-40 120 34 130-58 120 42 30-8v200Z" />
+        <path fill="url(#cone)" d="M0 600V478c200-26 380-98 520-198l120-120 60-62 18-6 24 4 48 44 110 120c140 120 340 180 540 210v130Z" />
+        <path fill="#161d0c" fill-opacity="0.18" d="M742 96l48 44 110 120c140 120 340 180 540 210v130H880L800 380l-40-160Z" />
+        <path fill="#e3e6d6" d="M700 98l18-6 24 4 48 44 70 75-15 7-17-12-16 22-16-12-14 25-16-17-14 24-14-20-16 24-14-20-16 14-16-24-16 14-12-18-20 10-18-18Z" />
+        <path fill="#161d0c" fill-opacity="0.1" d="M742 96l48 44 70 75-15 7-17-12-16 22-16-12-14 25-16-17-14 24-6-60Z" />
+        <path fill="#0f0f0f" d="M0 600v-80c120-20 200-50 300-30s160-20 260 10 200-10 300 10 220-30 340-10 180-5 240 5v95Z" />
+      </svg>
+
+      <div class="brand">
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <rect width="32" height="32" rx="8" fill="#fafafa" />
+          <path d="M6 24 L13.5 10 L18 18 L20.5 14 L26 24 Z" fill="#95aa5a" />
+        </svg>
+        Atelier Sommet
+      </div>
+      <p class="eyebrow">Software &amp; technical marketing agency</p>
+      <h1>Websites that convert.<br />Software that scales.</h1>
+      <div class="rule"></div>
+    </div>
+  </body>
+</html>
