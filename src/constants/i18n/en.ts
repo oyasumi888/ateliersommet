@@ -216,54 +216,10 @@ export const en: Dictionary = {
         description: 'You own the repositories, accounts and documentation. We stay because we add value.',
       },
     },
-    /** TODO(launch): replace placeholder team members with real profiles. */
-    members: [
-      {
-        name: 'Founder Name',
-        role: 'Software Engineer & Founder',
-        bio: 'Full-stack engineer focused on performance, architecture and business software.',
-        initials: 'FN',
-      },
-      {
-        name: 'Designer Name',
-        role: 'Lead UI/UX Designer',
-        bio: 'Designs conversion-focused interfaces and design systems that scale.',
-        initials: 'DN',
-      },
-      {
-        name: 'Analyst Name',
-        role: 'Technical SEO & Analytics Lead',
-        bio: 'Turns crawl data and analytics into prioritized growth roadmaps.',
-        initials: 'AN',
-      },
-    ],
-    /** Placeholder testimonials — replace with real, approved client quotes before launch. */
-    testimonials: [
-      {
-        quote:
-          'The new landing page loads instantly and our demo requests almost doubled in the first quarter. The handover docs were better than anything we had internally.',
-        author: 'Client Name',
-        role: 'Head of Marketing',
-        company: 'B2B SaaS company',
-        serviceId: 'web',
-      },
-      {
-        quote:
-          'They found indexation issues three previous agencies missed, and for the first time our analytics actually match our CRM.',
-        author: 'Client Name',
-        role: 'Growth Lead',
-        company: 'E-commerce brand',
-        serviceId: 'seo',
-      },
-      {
-        quote:
-          'Our order-to-invoice process went from four spreadsheets and a lot of copy-paste to one internal tool the whole team likes using.',
-        author: 'Client Name',
-        role: 'Operations Director',
-        company: 'Manufacturing SME',
-        serviceId: 'software',
-      },
-    ],
+    /** Real team profiles go here; the block is hidden while the list is empty. */
+    members: [],
+    /** Only real, approved client quotes; the block is hidden while the list is empty. */
+    testimonials: [],
   },
 
   contact: {

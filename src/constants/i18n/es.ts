@@ -221,54 +221,10 @@ export const es: Dictionary = {
         description: 'Los repositorios, cuentas y documentación son tuyos. Nos quedamos porque aportamos valor.',
       },
     },
-    /** TODO(launch): replace placeholder team members with real profiles. */
-    members: [
-      {
-        name: 'Nombre del fundador',
-        role: 'Ingeniero de software y fundador',
-        bio: 'Ingeniero full-stack enfocado en rendimiento, arquitectura y software empresarial.',
-        initials: 'NF',
-      },
-      {
-        name: 'Nombre del diseñador',
-        role: 'Líder de diseño UI/UX',
-        bio: 'Diseña interfaces orientadas a conversión y sistemas de diseño que escalan.',
-        initials: 'ND',
-      },
-      {
-        name: 'Nombre del analista',
-        role: 'Líder de SEO técnico y analítica',
-        bio: 'Convierte datos de rastreo y analítica en hojas de ruta de crecimiento priorizadas.',
-        initials: 'NA',
-      },
-    ],
-    /** Placeholder testimonials — replace with real, approved client quotes before launch. */
-    testimonials: [
-      {
-        quote:
-          'La nueva landing page carga al instante y nuestras solicitudes de demo casi se duplicaron en el primer trimestre. La documentación de entrega fue mejor que cualquier cosa que teníamos internamente.',
-        author: 'Nombre del cliente',
-        role: 'Directora de marketing',
-        company: 'Empresa SaaS B2B',
-        serviceId: 'web',
-      },
-      {
-        quote:
-          'Encontraron problemas de indexación que tres agencias anteriores no vieron y, por primera vez, nuestra analítica coincide con nuestro CRM.',
-        author: 'Nombre del cliente',
-        role: 'Líder de crecimiento',
-        company: 'Marca de e-commerce',
-        serviceId: 'seo',
-      },
-      {
-        quote:
-          'Nuestro proceso de pedido a factura pasó de cuatro hojas de cálculo y mucho copiar y pegar a una sola herramienta interna que a todo el equipo le gusta usar.',
-        author: 'Nombre del cliente',
-        role: 'Director de operaciones',
-        company: 'PyME manufacturera',
-        serviceId: 'software',
-      },
-    ],
+    /** Real team profiles go here; the block is hidden while the list is empty. */
+    members: [],
+    /** Only real, approved client quotes; the block is hidden while the list is empty. */
+    testimonials: [],
   },
 
   contact: {

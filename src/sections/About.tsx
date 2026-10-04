@@ -46,54 +46,58 @@ export function About() {
       </div>
 
       {/* Team */}
-      <div className="mt-20">
-        <h3 className="text-sm font-semibold text-fg">{about.team}</h3>
-        <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {about.members.map((m) => (
-            <li key={m.role} className="flex gap-4 rounded-lg border border-line bg-surface p-5">
-              {m.avatarUrl ? (
-                <img src={m.avatarUrl} alt="" width={48} height={48} loading="lazy" className="size-12 shrink-0 rounded-full object-cover" />
-              ) : (
-                <span aria-hidden className="grid size-12 shrink-0 place-items-center rounded-full bg-olive-700 font-mono text-sm font-semibold text-paper">
-                  {m.initials}
-                </span>
-              )}
-              <div>
-                <p className="font-medium">{m.name}</p>
-                <p className="text-sm text-accent">{m.role}</p>
-                <p className="mt-2 text-sm leading-relaxed text-muted">{m.bio}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
+      {about.members.length > 0 && (
+        <div className="mt-20">
+          <h3 className="text-sm font-semibold text-fg">{about.team}</h3>
+          <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {about.members.map((m) => (
+              <li key={m.role} className="flex gap-4 rounded-lg border border-line bg-surface p-5">
+                {m.avatarUrl ? (
+                  <img src={m.avatarUrl} alt="" width={48} height={48} loading="lazy" className="size-12 shrink-0 rounded-full object-cover" />
+                ) : (
+                  <span aria-hidden className="grid size-12 shrink-0 place-items-center rounded-full bg-olive-700 font-mono text-sm font-semibold text-paper">
+                    {m.initials}
+                  </span>
+                )}
+                <div>
+                  <p className="font-medium">{m.name}</p>
+                  <p className="text-sm text-accent">{m.role}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-muted">{m.bio}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {/* Testimonials */}
-      <div className="mt-20">
-        <h3 className="text-sm font-semibold text-fg">{about.clientsSay}</h3>
-        <ul className="mt-6 grid gap-4 lg:grid-cols-3">
-          {about.testimonials.map((q, i) => (
-            <li key={i}>
-              <figure className="flex h-full flex-col rounded-lg border border-line bg-surface p-6">
-                <Quote className="size-5 text-accent" aria-hidden />
-                <blockquote className="mt-4 flex-1 leading-relaxed">“{q.quote}”</blockquote>
-                <figcaption className="mt-6 border-t border-line pt-4 text-sm">
-                  <span className="font-medium">{q.author}</span>
-                  <span className="text-muted">
-                    {' '}
-                    · {q.role}, {q.company}
-                  </span>
-                  {q.serviceId && (
-                    <span className="mt-2 block font-mono text-[11px] text-accent">
-                      {getServiceById(t, q.serviceId)?.shortTitle}
+      {about.testimonials.length > 0 && (
+        <div className="mt-20">
+          <h3 className="text-sm font-semibold text-fg">{about.clientsSay}</h3>
+          <ul className="mt-6 grid gap-4 lg:grid-cols-3">
+            {about.testimonials.map((q, i) => (
+              <li key={i}>
+                <figure className="flex h-full flex-col rounded-lg border border-line bg-surface p-6">
+                  <Quote className="size-5 text-accent" aria-hidden />
+                  <blockquote className="mt-4 flex-1 leading-relaxed">“{q.quote}”</blockquote>
+                  <figcaption className="mt-6 border-t border-line pt-4 text-sm">
+                    <span className="font-medium">{q.author}</span>
+                    <span className="text-muted">
+                      {' '}
+                      · {q.role}, {q.company}
                     </span>
-                  )}
-                </figcaption>
-              </figure>
-            </li>
-          ))}
-        </ul>
-      </div>
+                    {q.serviceId && (
+                      <span className="mt-2 block font-mono text-[11px] text-accent">
+                        {getServiceById(t, q.serviceId)?.shortTitle}
+                      </span>
+                    )}
+                  </figcaption>
+                </figure>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </Section>
   )
 }
