@@ -30,10 +30,16 @@ merging are small in-house modules, which keeps the JS bundle around 86 kB gzipp
 
 ```
 .
-├── index.html              # HTML shell: meta/SEO tags, favicon, pre-paint theme script
+├── index.html              # HTML shell: title/description, favicon (share tags added at build)
 ├── privacy.html, terms.html, cookies.html  # standalone legal pages (entry: src/legal.tsx)
 ├── public/
-│   └── favicon.svg         # Summit glyph (olive on ink)
+│   ├── favicon.svg         # Summit glyph (olive on ink)
+│   ├── og-image.png        # Share preview card (1200x630)
+│   ├── theme-init.js       # Applies the saved theme before first paint
+│   ├── _headers            # Cloudflare headers: CSP, security, caching
+│   └── robots.txt
+├── scripts/
+│   └── og-image.html       # Source of og-image.png
 ├── src/
 │   ├── main.tsx            # Entry: fonts, global CSS, <App/>
 │   ├── legal.tsx           # Entry for the legal pages: renders <LegalPage id={data-page}/>
@@ -73,8 +79,10 @@ merging are small in-house modules, which keeps the JS bundle around 86 kB gzipp
 │   │   ├── useLocale.ts        # language state, persistence, useDocumentMeta
 │   │   └── useActiveSection.ts # IntersectionObserver-driven nav highlighting
 │   └── lib/
-│       └── cn.ts               # className joiner
+│       ├── cn.ts               # className joiner
+│       └── env.ts              # VITE_* cleaning and validation (app + build)
 ├── .env.example            # documented environment variables
+├── wrangler.jsonc          # Cloudflare Worker config (serves dist/)
 ├── eslint.config.js
 ├── tsconfig*.json          # project references: app (src) + node (vite.config.ts)
 └── vite.config.ts          # React + Tailwind plugins, "@/..." → src alias
@@ -140,7 +148,8 @@ The values are declared under `:root, [data-theme='dark']` and `[data-theme='lig
 - `<html data-theme="dark|light">` drives the tokens. A custom `dark:` variant targets `[data-theme='dark']`.
 - `useTheme()` (via `ThemeProvider`) sets the attribute, updates `<meta name="theme-color">`,
   and persists the choice to `localStorage`.
-- An inline script in `index.html` applies the saved theme **before first paint** (no flash).
+- `public/theme-init.js`, loaded in each page's `<head>`, applies the saved theme **before first paint**
+  (no flash). It is a file rather than an inline script so the CSP can forbid inline scripts.
 - First visit: follows the OS `prefers-color-scheme`, falling back to dark.
 
 ### Other tokens
@@ -231,6 +240,31 @@ Empty variables are simply not rendered. Vite inlines these values into the Java
 build time: this keeps them out of the git repository, but they are public on the live site
 (they are displayed on it). Never put secrets in a `VITE_*` variable. Changing a value requires a
 rebuild / redeploy.
+
+### Security
+
+The site is static: no forms, no backend, no user input reaches a server. What it does guard:
+
+- **Build-time input validation** (`src/lib/env.ts`): every `VITE_*` value is cleaned (control,
+  zero-width and bidi characters stripped, length capped) and validated. URLs must be `https`
+  without credentials, the site URL must be a bare origin, the email and phone must match strict
+  patterns. This blocks `javascript:` links and `mailto:` header injection (`?bcc=`). An invalid
+  value **fails the production build** (`vite.config.ts`); the app only ever reads the validated values.
+- **Runtime values** (localStorage `theme` / `lang`, the legal pages' `data-page`) are whitelisted.
+- **No HTML injection paths**: React escapes all text; the code has no `dangerouslySetInnerHTML`,
+  `innerHTML` or `eval`. Keep it that way.
+- **Content-Security-Policy** and other headers are set at Cloudflare's edge in `public/_headers`:
+  same-origin scripts, styles, fonts and images only, no inline scripts, no plugins, no forms, no
+  framing. If you add a third-party script (analytics, chat...), add its origin to the CSP or it
+  will be blocked. Check the browser console for CSP errors after any change.
+
+### Share preview card
+
+Shared links show `public/og-image.png` (1200x630), rendered from `scripts/og-image.html`
+(instructions at the top of that file). A build plugin in `vite.config.ts` adds the canonical,
+Open Graph and Twitter tags to every page from its `<title>` and meta description. Set
+`VITE_SITE_URL`: most platforms ignore cards whose image URL is not absolute. Test a deployed URL
+with the Facebook Sharing Debugger, LinkedIn Post Inspector or opengraph.xyz.
 
 ---
 
@@ -353,7 +387,7 @@ CLI alternative: `npm run build && npx wrangler deploy` (log in first with `npx 
 - [ ] Add company legal details (registered name, address, tax ID) to the footer if required in your jurisdiction.
 
 ### SEO & analytics
-- [ ] Add `<link rel="canonical">`, `og:url`, `og:image` (1200×630) and Twitter card tags in `index.html`.
+- [x] Canonical, Open Graph and Twitter card tags on every page (build plugin, needs `VITE_SITE_URL`).
 - [x] `public/robots.txt` allows all crawlers.
 - [ ] Add `sitemap.xml` to `public/` (and a `Sitemap:` line in `robots.txt`) once the domain is final.
 - [ ] Add `Organization` / `ProfessionalService` JSON-LD structured data.
