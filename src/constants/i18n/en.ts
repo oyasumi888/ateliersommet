@@ -33,7 +33,7 @@ export const en: Dictionary = {
       'We build high-converting landing pages, fix the technical SEO and analytics behind your growth, and engineer bespoke software that runs your operations — with the rigor of a product team.',
     primaryCta: 'Start a project',
     secondaryCta: 'Explore services',
-    trustLine: 'Fixed-scope proposals · Senior engineers only · You own all the code',
+    trustLine: 'Fixed-scope proposals · Software engineers only · You own all the code',
     performance: 'Performance',
     conversionRate: 'Conversion rate',
   },
@@ -185,7 +185,7 @@ export const en: Dictionary = {
 
   about: {
     eyebrow: 'About us',
-    title: 'A small senior team that treats marketing like engineering.',
+    title: 'A small team of software engineers that treats marketing like engineering.',
     paragraphs: [
       'We are developers, designers and analysts who got tired of watching good businesses lose leads to slow pages, broken tracking and software that never quite fit. So we built an agency that works the way a strong product team does.',
       'Every engagement starts with measurement: what is converting, what is leaking, and what is costing your team hours. Then we ship in small, reviewable increments — typed code, automated checks, documented decisions — so you always know what you are paying for and you own everything we build.',
@@ -222,7 +222,7 @@ export const en: Dictionary = {
     members: [
       {
         name: 'Founder Name',
-        role: 'Principal Engineer & Founder',
+        role: 'Software Engineer & Founder',
         bio: 'Full-stack engineer focused on performance, architecture and business software.',
         initials: 'FN',
       },
@@ -272,7 +272,7 @@ export const en: Dictionary = {
     eyebrow: 'Contact',
     title: "Tell us what you're building.",
     description:
-      'Share a few details and a senior engineer, not a salesperson, will reply with next steps and, where it makes sense, a fixed-scope proposal.',
+      'Share a few details and a software engineer, not a salesperson, will reply with next steps and, where it makes sense, a fixed-scope proposal.',
     emailUs: 'Email us',
     bookCall: 'Book a call',
     callUs: 'Call us',

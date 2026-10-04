@@ -33,7 +33,7 @@ export const es: Dictionary = {
       'Creamos landing pages de alta conversión, corregimos el SEO técnico y la analítica detrás de tu crecimiento, y desarrollamos software a la medida para operar tu negocio, con el rigor de un equipo de producto.',
     primaryCta: 'Inicia un proyecto',
     secondaryCta: 'Ver servicios',
-    trustLine: 'Propuestas de alcance fijo · Solo ingenieros senior · El código es tuyo',
+    trustLine: 'Propuestas de alcance fijo · Solo ingenieros de software · El código es tuyo',
     performance: 'Rendimiento',
     conversionRate: 'Tasa de conversión',
   },
@@ -189,7 +189,7 @@ export const es: Dictionary = {
 
   about: {
     eyebrow: 'Nosotros',
-    title: 'Un equipo pequeño y senior que trata el marketing como ingeniería.',
+    title: 'Un equipo pequeño de ingenieros de software que trata el marketing como ingeniería.',
     paragraphs: [
       'Somos desarrolladores, diseñadores y analistas cansados de ver buenos negocios perder clientes por páginas lentas, mediciones rotas y software que nunca terminaba de encajar. Así que creamos una agencia que trabaja como lo hace un buen equipo de producto.',
       'Cada proyecto empieza midiendo: qué convierte, dónde se pierde y qué le cuesta horas a tu equipo. Después entregamos en incrementos pequeños y revisables (código tipado, pruebas automáticas, decisiones documentadas) para que siempre sepas qué estás pagando y seas dueño de todo lo que construimos.',
@@ -227,7 +227,7 @@ export const es: Dictionary = {
     members: [
       {
         name: 'Nombre del fundador',
-        role: 'Ingeniero principal y fundador',
+        role: 'Ingeniero de software y fundador',
         bio: 'Ingeniero full-stack enfocado en rendimiento, arquitectura y software empresarial.',
         initials: 'NF',
       },
@@ -277,7 +277,7 @@ export const es: Dictionary = {
     eyebrow: 'Contacto',
     title: 'Cuéntanos qué estás construyendo.',
     description:
-      'Compártenos algunos detalles y un ingeniero senior, no un vendedor, te responderá con los siguientes pasos y, cuando tenga sentido, una propuesta de alcance fijo.',
+      'Compártenos algunos detalles y un ingeniero de software, no un vendedor, te responderá con los siguientes pasos y, cuando tenga sentido, una propuesta de alcance fijo.',
     emailUs: 'Escríbenos',
     bookCall: 'Agenda una llamada',
     callUs: 'Llámanos',
