@@ -23,7 +23,7 @@ const PRIVACY_POLICY: LegalDocument = {
       heading: 'Datos que recabamos',
       body: [
         'Datos que usted decide enviarnos. Cuando nos escribe, nos llama o agenda una reunión, recibimos los datos que nos proporciona, como su nombre, correo electrónico, teléfono, empresa y el contenido de su mensaje o las notas de la reunión.',
-        'Datos técnicos. Como en cualquier sitio web, cada visita envía datos técnicos a nuestro proveedor de hosting para poder mostrar la página y protegerla contra abusos: dirección IP, tipo de navegador y dispositivo, la página solicitada, la página de procedencia, y la fecha y hora. Estos datos quedan en registros del servidor de corta duración. No los usamos para identificarle ni para crear perfiles.',
+        'Datos técnicos. Como en cualquier sitio web, cada visita envía datos técnicos a nuestro proveedor de hosting para poder mostrar la página y protegerla contra abusos: dirección IP, tipo de navegador y dispositivo, la página solicitada, la página de procedencia, y la fecha y hora. Estos datos quedan en registros del servidor de corta duración. No los usamos para identificarle ni para crear perfiles. Las tipografías se sirven desde nuestro propio dominio, por lo que no se hace ninguna solicitud a servicios de fuentes de terceros como Google Fonts.',
         'Preferencias guardadas en su dispositivo. Si cambia entre el tema claro y el oscuro, o entre inglés y español, su elección se guarda en el almacenamiento local de su navegador con las claves "theme" y "lang". Nunca salen de su dispositivo ni se nos envían. Consulte nuestra Política de cookies para más detalles.',
         'No recabamos intencionalmente datos personales sensibles y le pedimos que no nos los envíe.',
       ],
@@ -93,6 +93,7 @@ const PRIVACY_POLICY: LegalDocument = {
       heading: 'Sus derechos',
       body: [
         'Según el lugar donde viva, puede tener derecho a acceder a los datos personales que tenemos sobre usted, rectificarlos, cancelarlos o solicitar su eliminación, oponerse a su uso o limitarlo (derechos ARCO), recibirlos en un formato portable y retirar cualquier consentimiento que haya otorgado.',
+        'Si se encuentra en México, la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP) le otorga los derechos de Acceso, Rectificación, Cancelación y Oposición (derechos ARCO), y también puede revocar su consentimiento o limitar el uso y la divulgación de sus datos. Para ejercerlos, envíe una solicitud a los datos de contacto que aparecen abajo con su nombre, un medio para responderle, copia de una identificación oficial y una descripción clara de los datos y del derecho que desea ejercer. Le responderemos dentro de los plazos que establece dicha ley.',
         'Los residentes de California y de otros estados de EE. UU. con leyes de privacidad tienen derecho a saber, eliminar y corregir sus datos personales, y a no ser discriminados por ejercer estos derechos. No vendemos ni compartimos datos personales en los términos que definen esas leyes.',
         'Para ejercer un derecho, contáctenos con los datos que aparecen abajo. Le responderemos en el plazo que marque la ley y es posible que primero necesitemos verificar su identidad. También tiene derecho a presentar una queja ante la autoridad de protección de datos de su país.',
       ],
@@ -292,6 +293,6 @@ const COOKIE_POLICY: LegalDocument = {
 }
 
 export const legalEs: LegalContent = {
-  lastUpdated: '2 de octubre de 2026',
+  lastUpdated: '4 de octubre de 2026',
   documents: { privacy: PRIVACY_POLICY, terms: TERMS_OF_SERVICE, cookies: COOKIE_POLICY },
 }

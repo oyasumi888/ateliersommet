@@ -21,7 +21,7 @@ const PRIVACY_POLICY: LegalDocument = {
       heading: 'Information we collect',
       body: [
         'Information you choose to send us. When you email us, call us or book a meeting, we receive the details you provide, such as your name, email address, phone number, company, and the content of your message or meeting notes.',
-        'Technical information. Like any website, each visit sends technical data to our hosting provider so the page can be delivered and protected from abuse: IP address, browser and device type, the page requested, the referring page, and the date and time. This data appears in short-lived server logs. We do not use it to identify or profile you.',
+        'Technical information. Like any website, each visit sends technical data to our hosting provider so the page can be delivered and protected from abuse: IP address, browser and device type, the page requested, the referring page, and the date and time. This data appears in short-lived server logs. We do not use it to identify or profile you. Fonts are served from our own domain, so no request is made to third-party font services such as Google Fonts.',
         'Preferences stored on your device. If you switch between the light and dark theme, or between English and Spanish, your choice is saved in your browser\'s local storage under the keys "theme" and "lang". They never leave your device and are not sent to us. See our Cookie Policy for details.',
         'We do not knowingly collect sensitive personal information, and we ask you not to send it to us.',
       ],
@@ -91,6 +91,7 @@ const PRIVACY_POLICY: LegalDocument = {
       heading: 'Your rights',
       body: [
         'Depending on where you live, you may have the right to access the personal information we hold about you, correct it, delete it, restrict or object to its use, receive it in a portable format, and withdraw any consent you have given.',
+        'If you are in Mexico, the Federal Law on the Protection of Personal Data Held by Private Parties (LFPDPPP) gives you the rights of Access, Rectification, Cancellation and Opposition (ARCO rights), and you may also revoke your consent or limit the use and disclosure of your data. To exercise them, send a request to the contact details below with your name, a way to reply to you, a copy of an identification document, and a clear description of the data and the right you want to exercise. We will respond within the time limits set by that law.',
         'Residents of California and other US states with privacy laws have the right to know, delete and correct their personal information, and to not be discriminated against for exercising these rights. We do not sell or share personal information as those laws define it.',
         'To exercise a right, contact us using the details below. We will reply within the time required by law (usually one month) and may need to verify your identity first. You also have the right to complain to your local data protection authority.',
       ],
@@ -290,6 +291,6 @@ const COOKIE_POLICY: LegalDocument = {
 }
 
 export const legalEn: LegalContent = {
-  lastUpdated: 'October 2, 2026',
+  lastUpdated: 'October 4, 2026',
   documents: { privacy: PRIVACY_POLICY, terms: TERMS_OF_SERVICE, cookies: COOKIE_POLICY },
 }
