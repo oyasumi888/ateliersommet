@@ -165,13 +165,6 @@
 }
 
 @layer utilities {
-  /* Subtle grid backdrop used behind the hero and demo. */
-  .bg-grid {
-    background-image:
-      linear-gradient(var(--line) 1px, transparent 1px),
-      linear-gradient(90deg, var(--line) 1px, transparent 1px);
-    background-size: 48px 48px;
-  }
   .text-balance {
     text-wrap: balance;
   }

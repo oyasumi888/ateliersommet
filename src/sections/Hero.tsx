@@ -9,8 +9,7 @@ export function Hero() {
   const hero = t.hero
   return (
     <section id="home" aria-labelledby="hero-title" className="relative overflow-hidden pt-32 pb-20 sm:pt-40 sm:pb-28">
-      {/* Backdrop: faded grid + olive glow */}
-      <div aria-hidden className="bg-grid pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_at_top,black_30%,transparent_75%)]" />
+      {/* Backdrop: olive glow */}
       <div aria-hidden className="pointer-events-none absolute -top-40 left-1/2 h-[480px] w-[880px] -translate-x-1/2 rounded-full bg-olive-600/25 blur-3xl" />
 
       <Container className="relative grid items-center gap-16 lg:grid-cols-[1.05fr_1fr]">

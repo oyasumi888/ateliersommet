@@ -19,7 +19,6 @@ export function CapabilityDemo() {
 
   return (
     <Section id="demo" labelledBy="demo-title" className="overflow-hidden border-t border-line">
-      <div aria-hidden className="bg-grid pointer-events-none absolute inset-0 opacity-50 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)]" />
       <div className="relative">
         <SectionHeading
           id="demo-title"
