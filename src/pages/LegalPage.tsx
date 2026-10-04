@@ -41,7 +41,7 @@ function LegalDocumentView({ id }: { id: LegalDocumentId }) {
         <Container className="flex h-16 items-center justify-between gap-4">
           <Logo />
           <div className="flex items-center gap-2">
-            <a href="/" className="inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm text-muted transition-colors hover:text-fg">
+            <a href="/" className="inline-flex items-center gap-1.5 rounded-md px-3.5 py-2 text-sm text-muted transition-colors hover:text-fg">
               <ArrowLeft className="size-4" aria-hidden />
               <span className="hidden sm:inline">{t.legal.backToSite}</span>
               <span className="sr-only sm:hidden">{t.legal.backToSite}</span>
@@ -55,7 +55,7 @@ function LegalDocumentView({ id }: { id: LegalDocumentId }) {
       <main id="main" className="py-16 sm:py-20">
         <Container className="max-w-3xl">
           <nav aria-label={t.legal.documentsLabel}>
-            <ul className="inline-flex flex-wrap gap-1 rounded-3xl border border-line bg-surface p-1">
+            <ul className="inline-flex flex-wrap gap-1 rounded-lg border border-line bg-surface p-1">
               {getLegalLinks(t).map((l) => {
                 const current = l.href === `/${id}`
                 return (
@@ -64,7 +64,7 @@ function LegalDocumentView({ id }: { id: LegalDocumentId }) {
                       href={l.href}
                       aria-current={current ? 'page' : undefined}
                       className={cn(
-                        'block rounded-full px-4 py-2 text-sm transition-colors',
+                        'block rounded-md px-4 py-2 text-sm transition-colors',
                         current ? 'bg-accent-strong text-paper' : 'text-muted hover:text-fg',
                       )}
                     >
@@ -77,7 +77,10 @@ function LegalDocumentView({ id }: { id: LegalDocumentId }) {
           </nav>
 
           <article className="mt-12">
-            <p className="font-mono text-xs font-medium tracking-[0.2em] text-accent uppercase">{t.legal.eyebrow}</p>
+            <p className="flex items-center gap-3 text-sm font-medium text-accent">
+              <span aria-hidden className="h-px w-8 bg-accent" />
+              {t.legal.eyebrow}
+            </p>
             <h1 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">{doc.title}</h1>
             <p className="mt-4 font-mono text-xs text-muted">
               {t.legal.lastUpdated}: {lastUpdated}
@@ -126,7 +129,7 @@ function Block({ block }: { block: LegalBlock }) {
 
   if ('table' in block) {
     return (
-      <div className="overflow-x-auto rounded-2xl border border-line">
+      <div className="overflow-x-auto rounded-lg border border-line">
         <table className="w-full min-w-[36rem] text-left text-sm">
           <thead className="bg-surface text-fg">
             <tr>
@@ -175,7 +178,7 @@ function ContactBlock() {
   return (
     <>
       <p>{t.legal.contactIntro}</p>
-      <dl className="grid gap-x-6 gap-y-2 rounded-2xl border border-line bg-surface p-5 sm:grid-cols-[auto_1fr]">
+      <dl className="grid gap-x-6 gap-y-2 rounded-lg border border-line bg-surface p-5 sm:grid-cols-[auto_1fr]">
         {rows.map((r) => (
           <div key={r.label} className="contents">
             <dt className="text-sm text-muted">{r.label}</dt>

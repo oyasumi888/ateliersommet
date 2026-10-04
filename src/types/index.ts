@@ -179,8 +179,6 @@ export interface Dictionary {
     primaryCta: string
     secondaryCta: string
     trustLine: string
-    performance: string
-    conversionRate: string
   }
   services: {
     eyebrow: string

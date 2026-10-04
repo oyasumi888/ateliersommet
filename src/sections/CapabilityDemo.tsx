@@ -27,7 +27,7 @@ export function CapabilityDemo() {
           description={t.demo.description}
         />
 
-        <div role="radiogroup" aria-label={t.demo.chooseDemo} className="mt-10 inline-flex rounded-full border border-line bg-surface p-1">
+        <div role="radiogroup" aria-label={t.demo.chooseDemo} className="mt-10 inline-flex rounded-lg border border-line bg-surface p-1">
           {(
             [
               { id: 'theme', label: t.demo.themeLab, icon: Palette },
@@ -41,7 +41,7 @@ export function CapabilityDemo() {
               aria-checked={tab === id}
               onClick={() => setTab(id)}
               className={cn(
-                'inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm transition-colors',
+                'inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm transition-colors',
                 tab === id ? 'bg-accent-strong text-paper' : 'text-muted hover:text-fg',
               )}
             >
@@ -128,7 +128,7 @@ function ThemeLab() {
           </div>
         </Control>
 
-        <pre className="overflow-x-auto rounded-xl bg-bg p-4 font-mono text-[11px] leading-relaxed text-muted">
+        <pre className="overflow-x-auto rounded-md bg-bg p-4 font-mono text-[11px] leading-relaxed text-muted">
           <code>
             {`[data-theme="${theme}"]\n--accent: ${accent.replace('var(--color-', '').replace(')', '')};\n--radius: ${radius};`}
           </code>
@@ -199,7 +199,7 @@ function OptionButton({ pressed, onClick, children }: { pressed: boolean; onClic
       aria-pressed={pressed}
       onClick={onClick}
       className={cn(
-        'inline-flex items-center justify-center gap-2 rounded-xl border px-3 py-2 text-sm transition-colors',
+        'inline-flex items-center justify-center gap-2 rounded-md border px-3 py-2 text-sm transition-colors',
         pressed ? 'border-accent bg-accent-soft text-fg' : 'border-line text-muted hover:text-fg',
       )}
     >
@@ -280,7 +280,7 @@ function PerformanceLab() {
               <li key={o.id}>
                 <label
                   className={cn(
-                    'flex cursor-pointer items-center justify-between gap-4 rounded-xl border p-4 transition-colors',
+                    'flex cursor-pointer items-center justify-between gap-4 rounded-md border p-4 transition-colors',
                     on ? 'border-accent/60 bg-accent-soft' : 'border-line hover:border-accent/40',
                   )}
                 >

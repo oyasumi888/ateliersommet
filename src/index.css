@@ -50,7 +50,7 @@
   /* Paper — clean off-white neutral (#FAFAFA). */
   --color-paper: #fafafa;
 
-  --radius-card: 1.25rem;
+  --radius-card: 0.75rem;
 
   --animate-fade-up: fade-up 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
   --animate-float: float 6s ease-in-out infinite;

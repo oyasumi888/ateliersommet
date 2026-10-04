@@ -5,10 +5,10 @@ type Variant = 'primary' | 'secondary' | 'ghost'
 type Size = 'md' | 'lg'
 
 const base =
-  'inline-flex items-center justify-center gap-2 rounded-full font-medium transition-[background-color,border-color,color,transform] duration-200 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-60'
+  'inline-flex items-center justify-center gap-2 rounded-md font-medium transition-[background-color,border-color,color,transform] duration-200 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-60'
 
 const variants: Record<Variant, string> = {
-  primary: 'bg-accent-strong text-accent-fg hover:bg-olive-700 shadow-sm shadow-olive-950/30',
+  primary: 'bg-accent-strong text-accent-fg hover:bg-olive-700',
   secondary: 'border border-line bg-surface text-fg hover:border-accent hover:text-accent',
   ghost: 'text-fg hover:text-accent',
 }

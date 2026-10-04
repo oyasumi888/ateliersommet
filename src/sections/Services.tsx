@@ -64,13 +64,13 @@ export function Services() {
                 tabIndex={selected ? 0 : -1}
                 onClick={() => setActiveId(service.id)}
                 className={cn(
-                  'group flex items-start gap-4 rounded-2xl border p-5 text-left transition-colors',
+                  'group flex items-start gap-4 rounded-lg border p-5 text-left transition-colors',
                   selected ? 'border-accent/60 bg-accent-soft' : 'border-line bg-surface hover:border-accent/40',
                 )}
               >
                 <span
                   className={cn(
-                    'grid size-10 shrink-0 place-items-center rounded-xl transition-colors',
+                    'grid size-10 shrink-0 place-items-center rounded-md transition-colors',
                     selected ? 'bg-accent-strong text-paper' : 'bg-surface-2 text-accent',
                   )}
                 >
@@ -98,7 +98,7 @@ export function Services() {
               <h3 className="text-2xl font-semibold tracking-tight">{active.title}</h3>
               <p className="mt-3 leading-relaxed text-muted">{active.summary}</p>
             </div>
-            <div className="shrink-0 rounded-2xl border border-line bg-bg px-5 py-4 sm:text-right">
+            <div className="shrink-0 rounded-lg border border-line bg-bg px-5 py-4 sm:text-right">
               <p className="font-mono text-2xl font-semibold text-accent">{active.metric.value}</p>
               <p className="mt-1 max-w-[12rem] text-xs text-muted">{active.metric.label}</p>
             </div>
@@ -106,7 +106,7 @@ export function Services() {
 
           <ul className="mt-8 grid gap-4 md:grid-cols-3">
             {active.features.map((f) => (
-              <li key={f.title} className="rounded-2xl border border-line bg-bg/60 p-5">
+              <li key={f.title} className="rounded-lg border border-line bg-bg/60 p-5">
                 <h4 className="font-medium">{f.title}</h4>
                 <p className="mt-2 text-sm leading-relaxed text-muted">{f.description}</p>
               </li>
@@ -115,7 +115,7 @@ export function Services() {
 
           <div className="mt-8 grid gap-8 md:grid-cols-2">
             <div>
-              <h4 className="font-mono text-xs tracking-[0.2em] text-muted uppercase">{t.services.deliverables}</h4>
+              <h4 className="text-sm font-semibold text-fg">{t.services.deliverables}</h4>
               <ul className="mt-4 space-y-2.5">
                 {active.deliverables.map((d) => (
                   <li key={d} className="flex items-start gap-2.5 text-sm">
@@ -126,10 +126,10 @@ export function Services() {
               </ul>
             </div>
             <div>
-              <h4 className="font-mono text-xs tracking-[0.2em] text-muted uppercase">{t.services.typicalStack}</h4>
+              <h4 className="text-sm font-semibold text-fg">{t.services.typicalStack}</h4>
               <ul className="mt-4 flex flex-wrap gap-2">
                 {active.stack.map((tech) => (
-                  <li key={tech} className="rounded-full border border-line px-3 py-1 font-mono text-xs text-muted">
+                  <li key={tech} className="rounded-md border border-line px-2.5 py-1 font-mono text-xs text-muted">
                     {tech}
                   </li>
                 ))}

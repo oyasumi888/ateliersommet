@@ -52,7 +52,7 @@ export function Navbar() {
                     href={link.href}
                     aria-current={isActive ? 'true' : undefined}
                     className={cn(
-                      'rounded-full px-3.5 py-2 text-sm transition-colors',
+                      'rounded-md px-3.5 py-2 text-sm transition-colors',
                       isActive ? 'text-fg' : 'text-muted hover:text-fg',
                     )}
                   >

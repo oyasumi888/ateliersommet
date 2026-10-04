@@ -34,8 +34,6 @@ export const en: Dictionary = {
     primaryCta: 'Start a project',
     secondaryCta: 'Explore services',
     trustLine: 'Fixed-scope proposals · Software engineers only · You own all the code',
-    performance: 'Performance',
-    conversionRate: 'Conversion rate',
   },
 
   services: {

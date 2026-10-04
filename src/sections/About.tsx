@@ -18,7 +18,7 @@ export function About() {
               <p key={p.slice(0, 24)}>{p}</p>
             ))}
           </div>
-          <dl className="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line">
+          <dl className="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-line bg-line">
             {about.stats.map((s) => (
               <div key={s.label} className="bg-surface p-5">
                 <dt className="text-xs text-muted">{s.label}</dt>
@@ -29,15 +29,13 @@ export function About() {
         </div>
 
         <div>
-          <h3 className="font-mono text-xs tracking-[0.2em] text-muted uppercase">{about.howWeWork}</h3>
+          <h3 className="text-sm font-semibold text-fg">{about.howWeWork}</h3>
           <ul className="mt-6 grid gap-4 sm:grid-cols-2">
             {getPrinciples(t).map((p) => {
               const Icon = p.icon
               return (
-                <li key={p.title} className="rounded-2xl border border-line bg-surface p-6">
-                  <span className="grid size-10 place-items-center rounded-xl bg-accent-soft text-accent">
-                    <Icon className="size-5" aria-hidden />
-                  </span>
+                <li key={p.title} className="rounded-lg border border-line bg-surface p-6">
+                  <Icon className="size-5 text-accent" aria-hidden />
                   <h4 className="mt-4 font-medium">{p.title}</h4>
                   <p className="mt-2 text-sm leading-relaxed text-muted">{p.description}</p>
                 </li>
@@ -49,10 +47,10 @@ export function About() {
 
       {/* Team */}
       <div className="mt-20">
-        <h3 className="font-mono text-xs tracking-[0.2em] text-muted uppercase">{about.team}</h3>
+        <h3 className="text-sm font-semibold text-fg">{about.team}</h3>
         <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {about.members.map((m) => (
-            <li key={m.role} className="flex gap-4 rounded-2xl border border-line bg-surface p-5">
+            <li key={m.role} className="flex gap-4 rounded-lg border border-line bg-surface p-5">
               {m.avatarUrl ? (
                 <img src={m.avatarUrl} alt="" width={48} height={48} loading="lazy" className="size-12 shrink-0 rounded-full object-cover" />
               ) : (
@@ -72,11 +70,11 @@ export function About() {
 
       {/* Testimonials */}
       <div className="mt-20">
-        <h3 className="font-mono text-xs tracking-[0.2em] text-muted uppercase">{about.clientsSay}</h3>
+        <h3 className="text-sm font-semibold text-fg">{about.clientsSay}</h3>
         <ul className="mt-6 grid gap-4 lg:grid-cols-3">
           {about.testimonials.map((q, i) => (
             <li key={i}>
-              <figure className="flex h-full flex-col rounded-2xl border border-line bg-surface p-6">
+              <figure className="flex h-full flex-col rounded-lg border border-line bg-surface p-6">
                 <Quote className="size-5 text-accent" aria-hidden />
                 <blockquote className="mt-4 flex-1 leading-relaxed">“{q.quote}”</blockquote>
                 <figcaption className="mt-6 border-t border-line pt-4 text-sm">

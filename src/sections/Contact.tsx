@@ -17,9 +17,7 @@ export function Contact() {
 
   return (
     <Section id="contact" labelledBy="contact-title" className="border-t border-line">
-      <div aria-hidden className="pointer-events-none absolute bottom-0 left-1/2 h-[360px] w-[720px] -translate-x-1/2 rounded-full bg-olive-600/15 blur-3xl" />
-
-      <div className="relative grid gap-12 lg:grid-cols-[1fr_1.3fr] lg:gap-16">
+      <div className="grid gap-12 lg:grid-cols-[1fr_1.3fr] lg:gap-16">
         <div>
           <SectionHeading id="contact-title" eyebrow={c.eyebrow} title={c.title} description={c.description} />
           {hasChannel && (
@@ -52,7 +50,7 @@ export function Contact() {
               const Icon = d.icon
               return (
                 <li key={d.label} className="flex items-center gap-4">
-                  <span className="grid size-11 shrink-0 place-items-center rounded-xl border border-line bg-bg text-accent">
+                  <span className="grid size-11 shrink-0 place-items-center rounded-md border border-line bg-bg text-accent">
                     <Icon className="size-5" aria-hidden />
                   </span>
                   <span className="min-w-0">
@@ -77,7 +75,7 @@ export function Contact() {
             {c.privacyAfter}
           </p>
           {!hasChannel && import.meta.env.DEV && (
-            <p className="mt-4 rounded-xl border border-dashed border-line p-4 font-mono text-xs text-muted">{c.devNote}</p>
+            <p className="mt-4 rounded-md border border-dashed border-line p-4 font-mono text-xs text-muted">{c.devNote}</p>
           )}
         </div>
       </div>

@@ -34,8 +34,6 @@ export const es: Dictionary = {
     primaryCta: 'Inicia un proyecto',
     secondaryCta: 'Ver servicios',
     trustLine: 'Propuestas de alcance fijo · Solo ingenieros de software · El código es tuyo',
-    performance: 'Rendimiento',
-    conversionRate: 'Tasa de conversión',
   },
 
   services: {
