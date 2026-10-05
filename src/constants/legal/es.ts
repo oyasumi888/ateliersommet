@@ -293,6 +293,6 @@ const COOKIE_POLICY: LegalDocument = {
 }
 
 export const legalEs: LegalContent = {
-  lastUpdated: '5 de octubre de 2026',
+  lastUpdated: '4 de octubre de 2026',
   documents: { privacy: PRIVACY_POLICY, terms: TERMS_OF_SERVICE, cookies: COOKIE_POLICY },
 }
