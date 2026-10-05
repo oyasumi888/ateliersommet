@@ -36,8 +36,7 @@ merging are small in-house modules, which keeps the JS bundle around 86 kB gzipp
 │   ├── favicon.svg         # Summit glyph (olive on ink)
 │   ├── og-image.png        # Share preview card (1200x630)
 │   ├── theme-init.js       # Applies the saved theme before first paint
-│   ├── _headers            # Cloudflare headers: CSP, security, caching
-│   └── robots.txt
+│   └── _headers            # Cloudflare headers: CSP, security, caching
 ├── scripts/
 │   └── og-image.html       # Source of og-image.png
 ├── src/
@@ -258,6 +257,18 @@ The site is static: no forms, no backend, no user input reaches a server. What i
   framing. If you add a third-party script (analytics, chat...), add its origin to the CSP or it
   will be blocked. Check the browser console for CSP errors after any change.
 
+### Sitemap & robots.txt
+
+A build plugin in `vite.config.ts` writes `dist/robots.txt` (allow all) and, when `VITE_SITE_URL`
+is set, `dist/sitemap.xml` plus a `Sitemap:` line in `robots.txt`.
+
+- Pages come from the `PAGES` list in `vite.config.ts`, which also drives the build inputs. Add new
+  pages there.
+- URLs match the canonical links exactly (clean paths such as `/privacy`).
+- `<lastmod>` is the date of the last git commit that touched that page's own content, which is the
+  only freshness signal Google trusts. It is left out on shallow clones, where git cannot tell.
+  `<priority>` and `<changefreq>` are omitted because Google ignores them.
+
 ### Share preview card
 
 Shared links show `public/og-image.png` (1200x630), rendered from `scripts/og-image.html`
@@ -388,8 +399,7 @@ CLI alternative: `npm run build && npx wrangler deploy` (log in first with `npx 
 
 ### SEO & analytics
 - [x] Canonical, Open Graph and Twitter card tags on every page (build plugin, needs `VITE_SITE_URL`).
-- [x] `public/robots.txt` allows all crawlers.
-- [ ] Add `sitemap.xml` to `public/` (and a `Sitemap:` line in `robots.txt`) once the domain is final.
+- [x] `robots.txt` and `sitemap.xml` are generated at build time (needs `VITE_SITE_URL` for the sitemap).
 - [ ] Add `Organization` / `ProfessionalService` JSON-LD structured data.
 - [ ] Set up GA4 (or Plausible/Fathom) and track clicks on the email / booking links as leads.
 - [ ] Verify the domain in Google Search Console and Bing Webmaster Tools, then submit the sitemap.

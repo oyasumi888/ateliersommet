@@ -1,3 +1,4 @@
+import { execFileSync } from 'node:child_process'
 import { fileURLToPath, URL } from 'node:url'
 import { defineConfig, loadEnv, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
@@ -71,20 +72,75 @@ function shareMeta(siteUrl: string): Plugin {
   }
 }
 
+/**
+ * Every HTML page: build entry, public path, and the files whose last commit dates its content
+ * (used as the sitemap `<lastmod>`, which Google only trusts when it tracks real content changes).
+ */
+const LEGAL_SOURCES = ['src/constants/legal', 'src/pages/LegalPage.tsx']
+const PAGES = [
+  { name: 'index', path: '/', sources: ['index.html', 'src', 'public/og-image.png', ...LEGAL_SOURCES.map((p) => `:(exclude)${p}`)] },
+  { name: 'privacy', path: '/privacy', sources: ['privacy.html', ...LEGAL_SOURCES] },
+  { name: 'terms', path: '/terms', sources: ['terms.html', ...LEGAL_SOURCES] },
+  { name: 'cookies', path: '/cookies', sources: ['cookies.html', ...LEGAL_SOURCES] },
+] as const
+
+const git = (...args: string[]) => execFileSync('git', args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim()
+
+/**
+ * Date (YYYY-MM-DD) of the last commit touching `paths`, or '' when it cannot be known: no git, or
+ * a shallow clone (where every file looks changed in the latest commit, which would fake freshness).
+ */
+function lastCommitDate(paths: readonly string[]): string {
+  try {
+    if (git('rev-parse', '--is-shallow-repository') === 'true') return ''
+    return git('log', '-1', '--format=%cs', '--', ...paths)
+  } catch {
+    return ''
+  }
+}
+
+/**
+ * Emits `sitemap.xml` and `robots.txt`. The sitemap needs absolute URLs, so it is only written
+ * when `VITE_SITE_URL` is set; URLs match the canonical links (clean paths, no `.html`).
+ * `<priority>` and `<changefreq>` are left out on purpose: Google ignores them.
+ */
+function sitemap(siteUrl: string): Plugin {
+  return {
+    name: 'atelier:sitemap',
+    apply: 'build',
+    generateBundle() {
+      const robots = ['User-agent: *', 'Allow: /']
+      if (siteUrl) {
+        const urls = PAGES.map(({ path, sources }) => {
+          const lastmod = lastCommitDate(sources)
+          return [`  <url>`, `    <loc>${escapeAttr(siteUrl + path)}</loc>`, lastmod && `    <lastmod>${lastmod}</lastmod>`, `  </url>`]
+            .filter(Boolean)
+            .join('\n')
+        })
+        this.emitFile({
+          type: 'asset',
+          fileName: 'sitemap.xml',
+          source: `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>\n`,
+        })
+        robots.push('', `Sitemap: ${siteUrl}/sitemap.xml`)
+      }
+      this.emitFile({ type: 'asset', fileName: 'robots.txt', source: `${robots.join('\n')}\n` })
+    },
+  }
+}
+
 export default defineConfig(({ mode }) => {
   const { env, errors } = parseSiteEnv(loadEnv(mode, process.cwd(), 'VITE_'))
 
   return {
-    plugins: [react(), tailwindcss(), validateEnv(errors), shareMeta(env.siteUrl)],
+    plugins: [react(), tailwindcss(), validateEnv(errors), shareMeta(env.siteUrl), sitemap(env.siteUrl)],
     resolve: {
       alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
     },
     build: {
       rollupOptions: {
-        // Multi-page build: the landing page plus one standalone page per legal document.
-        input: Object.fromEntries(
-          ['index', 'privacy', 'terms', 'cookies'].map((name) => [name, fileURLToPath(new URL(`./${name}.html`, import.meta.url))]),
-        ),
+        // Multi-page build: the landing page plus one standalone page per legal document (PAGES).
+        input: Object.fromEntries(PAGES.map(({ name }) => [name, fileURLToPath(new URL(`./${name}.html`, import.meta.url))])),
       },
     },
   }
